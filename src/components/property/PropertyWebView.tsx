@@ -12,6 +12,15 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useProperties } from "@/hooks/useProperties";
 import { PropertyData } from "@/types/property";
 import { Dispatch, SetStateAction } from "react";
+import { ChevronLeft } from "lucide-react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 interface PropertyWebViewProps {
   property?: PropertyData;
@@ -65,6 +74,22 @@ export function PropertyWebView({ property, open, onOpenChange }: PropertyWebVie
   // If we're using it as a standalone page
   return (
     <div className="max-w-[595px] h-[842px] mx-auto my-8 bg-white shadow-lg overflow-hidden">
+      <div className="bg-estate-50 p-4">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink onClick={() => navigate('/')} className="flex items-center gap-1 text-estate-600 hover:text-estate-800">
+                <ChevronLeft className="h-4 w-4" />
+                Back to Properties
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{resolvedProperty.title}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
       <PropertyWebViewContent 
         property={resolvedProperty}
         settings={settings}
