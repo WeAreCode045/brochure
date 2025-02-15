@@ -1,15 +1,12 @@
 
 import { PropertyDetails } from "../PropertyDetails";
 import { WebViewSectionProps } from "../types";
-import { WebViewHeader } from "../WebViewHeader";
 
 export function DetailsSection({ property, settings }: WebViewSectionProps) {
   console.log('Property details:', property);
 
   return (
     <div className="space-y-4 pb-24">
-      <WebViewHeader settings={settings} />
-      
       <PropertyDetails 
         property={property}
         primaryColor={settings?.secondaryColor}
