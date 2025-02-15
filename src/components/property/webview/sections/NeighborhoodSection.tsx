@@ -130,7 +130,7 @@ export function NeighborhoodSection({ property, settings }: WebViewSectionProps)
             height="100%"
             frameBorder="0"
             style={{ border: 0 }}
-            src={`https://www.google.com/maps/embed/v1/place?key=${settings.googleMapsApiKey}&q=${encodeURIComponent(property.address)}&zoom=14&disableDefaultUI=1`}
+            src={`https://www.google.com/maps/embed/v1/place?key=${settings.googleMapsApiKey}&q=${encodeURIComponent(property.address)}&zoom=14`}
             allowFullScreen
           />
         ) : (
