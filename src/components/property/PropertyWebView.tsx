@@ -10,14 +10,23 @@ import { usePropertyWebView } from "./webview/usePropertyWebView";
 import { useNavigate, useParams } from "react-router-dom";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useProperties } from "@/hooks/useProperties";
+import { PropertyData } from "@/types/property";
+import { Dispatch, SetStateAction } from "react";
 
-export function PropertyWebView() {
+interface PropertyWebViewProps {
+  property?: PropertyData;
+  open?: boolean;
+  onOpenChange?: Dispatch<SetStateAction<boolean>>;
+}
+
+export function PropertyWebView({ property, open, onOpenChange }: PropertyWebViewProps = {}) {
   const { id } = useParams();
   const navigate = useNavigate();
   const { settings } = useAgencySettings();
   const { properties } = useProperties();
   
-  const property = properties?.find(p => p.id === id);
+  // If property is not passed as prop, try to find it from the URL params
+  const resolvedProperty = property || properties?.find(p => p.id === id);
   
   const {
     selectedImage,
@@ -28,10 +37,68 @@ export function PropertyWebView() {
     handlePrint
   } = usePropertyWebView();
 
-  if (!property) {
+  if (!resolvedProperty) {
     return <div>Property not found</div>;
   }
 
+  // If we're using it as a dialog
+  if (typeof open !== 'undefined' && onOpenChange) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-[595px] h-[842px] p-0 overflow-hidden">
+          <DialogTitle className="sr-only">Property View</DialogTitle>
+          <PropertyWebViewContent 
+            property={resolvedProperty}
+            settings={settings}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            selectedImage={selectedImage}
+            setSelectedImage={setSelectedImage}
+            handleShare={handleShare}
+            handlePrint={handlePrint}
+          />
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  // If we're using it as a standalone page
+  return (
+    <div className="max-w-[595px] h-[842px] mx-auto my-8 bg-white shadow-lg overflow-hidden">
+      <PropertyWebViewContent 
+        property={resolvedProperty}
+        settings={settings}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        selectedImage={selectedImage}
+        setSelectedImage={setSelectedImage}
+        handleShare={handleShare}
+        handlePrint={handlePrint}
+      />
+    </div>
+  );
+}
+
+// Internal component to avoid code duplication
+function PropertyWebViewContent({
+  property,
+  settings,
+  currentPage,
+  setCurrentPage,
+  selectedImage,
+  setSelectedImage,
+  handleShare,
+  handlePrint
+}: {
+  property: PropertyData;
+  settings: any;
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
+  selectedImage: string | null;
+  setSelectedImage: (image: string | null) => void;
+  handleShare: () => void;
+  handlePrint: () => void;
+}) {
   // Force re-render when page changes
   const key = `page-${currentPage}`;
 
@@ -71,21 +138,19 @@ export function PropertyWebView() {
 
   return (
     <>
-      <div className="max-w-[595px] h-[842px] mx-auto my-8 bg-white shadow-lg overflow-hidden">
-        <div className="h-full flex flex-col">
-          <div className="flex-1 overflow-y-auto">
-            {filteredSections[currentPage]?.content}
-          </div>
-
-          <WebViewFooter 
-            currentPage={currentPage}
-            totalPages={filteredSections.length}
-            onPrevious={() => setCurrentPage(prev => prev - 1)}
-            onNext={() => setCurrentPage(prev => prev + 1)}
-            onShare={handleShare}
-            onPrint={handlePrint}
-          />
+      <div className="h-full flex flex-col">
+        <div className="flex-1 overflow-y-auto">
+          {filteredSections[currentPage]?.content}
         </div>
+
+        <WebViewFooter 
+          currentPage={currentPage}
+          totalPages={filteredSections.length}
+          onPrevious={() => setCurrentPage(currentPage - 1)}
+          onNext={() => setCurrentPage(currentPage + 1)}
+          onShare={handleShare}
+          onPrint={handlePrint}
+        />
       </div>
 
       {selectedImage && (
