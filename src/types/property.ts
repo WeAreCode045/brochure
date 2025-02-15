@@ -41,6 +41,7 @@ export interface PropertyData {
 
 export interface PropertyFormData extends PropertyData {}
 
-export interface PropertySubmitData extends Omit<PropertyData, 'features'> {
+export interface PropertySubmitData extends Omit<PropertyData, 'features' | 'areas'> {
   features: Json;
+  areas: Json[];
 }

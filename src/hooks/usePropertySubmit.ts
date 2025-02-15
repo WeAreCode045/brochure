@@ -23,6 +23,7 @@ export function usePropertySubmit() {
         .insert({
           ...formData,
           features: formData.features as unknown as Json,
+          areas: formData.areas as unknown as Json[],
         });
 
       if (error) throw error;

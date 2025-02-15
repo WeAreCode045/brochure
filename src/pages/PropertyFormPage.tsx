@@ -4,6 +4,7 @@ import { PropertyForm } from "@/components/PropertyForm";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import type { PropertySubmitData } from "@/types/property";
+import { Json } from "@/integrations/supabase/types";
 
 export default function PropertyFormPage() {
   const navigate = useNavigate();
@@ -14,7 +15,8 @@ export default function PropertyFormPage() {
     try {
       const propertyData = {
         ...data,
-        features: data.features,
+        features: data.features as Json,
+        areas: data.areas as Json[],
         gridImages: data.gridImages,
       };
 

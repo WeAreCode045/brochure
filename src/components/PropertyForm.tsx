@@ -1,3 +1,4 @@
+
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -10,7 +11,7 @@ import { useParams } from "react-router-dom";
 import { usePropertyForm } from "@/hooks/usePropertyForm";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { useFeatures } from "@/hooks/useFeatures";
-import type { PropertySubmitData } from "@/types/property";
+import type { PropertySubmitData, PropertyArea } from "@/types/property";
 import { Json } from "@/integrations/supabase/types";
 
 interface PropertyFormProps {
@@ -211,6 +212,7 @@ export function PropertyForm({ onSubmit }: PropertyFormProps) {
       const submitData: PropertySubmitData = {
         ...formData,
         features: formData.features as unknown as Json,
+        areas: formData.areas as unknown as Json[],
         featuredImage: formData.featuredImage,
         gridImages: formData.gridImages
       };
