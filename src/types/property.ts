@@ -6,6 +6,13 @@ export interface PropertyFeature {
   description: string;
 }
 
+export interface PropertyArea {
+  id: string;
+  title: string;
+  description: string;
+  images: string[];
+}
+
 export interface PropertyGridImage {
   id: string;
   url: string;
@@ -29,6 +36,7 @@ export interface PropertyData {
   floorplans: string[];
   featuredImage: string | null;
   gridImages: string[];
+  areas: PropertyArea[];
 }
 
 export interface PropertyFormData extends PropertyData {}

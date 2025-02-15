@@ -24,6 +24,7 @@ export function usePropertyForm(id: string | undefined, onSubmit: (data: Propert
     floorplans: [],
     featuredImage: null,
     gridImages: [],
+    areas: [],
   });
 
   useEffect(() => {
@@ -54,7 +55,8 @@ export function usePropertyForm(id: string | undefined, onSubmit: (data: Propert
           images,
           floorplans,
           "featuredImage",
-          "gridImages"
+          "gridImages",
+          areas
         `)
         .eq('id', id)
         .single();
@@ -77,6 +79,10 @@ export function usePropertyForm(id: string | undefined, onSubmit: (data: Propert
             }))
           : [];
 
+        const areas = Array.isArray(data.areas)
+          ? data.areas
+          : [];
+
         setFormData({
           title: data.title || "",
           price: data.price || "",
@@ -95,6 +101,7 @@ export function usePropertyForm(id: string | undefined, onSubmit: (data: Propert
           floorplans: data.floorplans || [],
           featuredImage: data.featuredImage,
           gridImages: Array.isArray(data.gridImages) ? data.gridImages : [],
+          areas: areas,
         });
       }
     } catch (error) {

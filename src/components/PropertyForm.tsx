@@ -1,4 +1,3 @@
-
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -6,6 +5,7 @@ import { PropertyDetails } from "./property/PropertyDetails";
 import { PropertyFeatures } from "./property/PropertyFeatures";
 import { PropertyDescription } from "./property/PropertyDescription";
 import { PropertyImages } from "./property/PropertyImages";
+import { PropertyAreas } from "./property/PropertyAreas";
 import { useParams } from "react-router-dom";
 import { usePropertyForm } from "@/hooks/usePropertyForm";
 import { useFileUpload } from "@/hooks/useFileUpload";
@@ -93,6 +93,39 @@ export function PropertyForm({ onSubmit }: PropertyFormProps) {
     }
   };
 
+  const handleAreaImageUpload = async (areaId: string, files: FileList) => {
+    try {
+      const uploadPromises = Array.from(files).map(async (file) => {
+        const url = await uploadFile(file);
+        return url;
+      });
+
+      const uploadedUrls = await Promise.all(uploadPromises);
+
+      setFormData(prev => ({
+        ...prev,
+        areas: prev.areas.map(area => 
+          area.id === areaId 
+            ? { ...area, images: [...area.images, ...uploadedUrls] }
+            : area
+        )
+      }));
+
+      toast({
+        title: "Success",
+        description: "Area images uploaded successfully",
+        variant: "default",
+      });
+    } catch (error) {
+      console.error('Error uploading area images:', error);
+      toast({
+        title: "Error",
+        description: "Failed to upload area images",
+        variant: "destructive",
+      });
+    }
+  };
+
   const handleRemoveImage = (index: number) => {
     setFormData(prev => ({
       ...prev,
@@ -118,6 +151,48 @@ export function PropertyForm({ onSubmit }: PropertyFormProps) {
     setFormData(prev => ({
       ...prev,
       gridImages: newGridImages
+    }));
+  };
+
+  const addArea = () => {
+    setFormData(prev => ({
+      ...prev,
+      areas: [
+        ...prev.areas,
+        {
+          id: crypto.randomUUID(),
+          title: '',
+          description: '',
+          images: []
+        }
+      ]
+    }));
+  };
+
+  const removeArea = (id: string) => {
+    setFormData(prev => ({
+      ...prev,
+      areas: prev.areas.filter(area => area.id !== id)
+    }));
+  };
+
+  const updateArea = (id: string, field: keyof PropertyArea, value: string | string[]) => {
+    setFormData(prev => ({
+      ...prev,
+      areas: prev.areas.map(area => 
+        area.id === id ? { ...area, [field]: value } : area
+      )
+    }));
+  };
+
+  const removeAreaImage = (areaId: string, imageUrl: string) => {
+    setFormData(prev => ({
+      ...prev,
+      areas: prev.areas.map(area => 
+        area.id === areaId
+          ? { ...area, images: area.images.filter(url => url !== imageUrl) }
+          : area
+      )
     }));
   };
 
@@ -175,6 +250,15 @@ export function PropertyForm({ onSubmit }: PropertyFormProps) {
           onAdd={addFeature}
           onRemove={removeFeature}
           onUpdate={updateFeature}
+        />
+
+        <PropertyAreas
+          areas={formData.areas || []}
+          onAdd={addArea}
+          onRemove={removeArea}
+          onUpdate={updateArea}
+          onImageUpload={handleAreaImageUpload}
+          onImageRemove={removeAreaImage}
         />
 
         <PropertyImages
