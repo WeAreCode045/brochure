@@ -34,38 +34,42 @@ export const useAgencySettings = () => {
         font: typography.font
       });
 
-      const updateData = {
-        name: settings.name,
-        agent_name: settings.agentName,
-        email: settings.email,
-        phone: settings.phone,
-        address: settings.address,
-        primary_color: settings.primaryColor,
-        secondary_color: settings.secondaryColor,
-        logo_url: logoUrl,
-        description_background_url: settings.descriptionBackgroundUrl,
-        icon_build_year: settings.iconBuildYear,
-        icon_bedrooms: settings.iconBedrooms,
-        icon_bathrooms: settings.iconBathrooms,
-        icon_garages: settings.iconGarages,
-        icon_energy_class: settings.iconEnergyClass,
-        icon_sqft: settings.iconSqft,
-        icon_living_space: settings.iconLivingSpace,
-        google_maps_api_key: settings.googleMapsApiKey,
-        xml_import_url: settings.xmlImportUrl,
-        typography_h1: typographyToJson(settings.typography_h1),
-        typography_h2: typographyToJson(settings.typography_h2),
-        typography_p: typographyToJson(settings.typography_p),
-        typography_title: typographyToJson(settings.typography_title),
-        typography_price: typographyToJson(settings.typography_price),
-        typography_label: typographyToJson(settings.typography_label),
-        typography_list: typographyToJson(settings.typography_list)
+      const updateData: AgencySettings = {
+        ...settings,
+        logoUrl,
       };
 
       if (settings.id) {
-        await agencySettingsService.updateSettings(settings.id, settings);
+        await agencySettingsService.updateSettings(settings.id, updateData);
       } else {
-        await agencySettingsService.createSettings(updateData);
+        const createData = {
+          name: settings.name,
+          agent_name: settings.agentName,
+          email: settings.email,
+          phone: settings.phone,
+          address: settings.address,
+          primary_color: settings.primaryColor,
+          secondary_color: settings.secondaryColor,
+          logo_url: logoUrl,
+          description_background_url: settings.descriptionBackgroundUrl,
+          icon_build_year: settings.iconBuildYear,
+          icon_bedrooms: settings.iconBedrooms,
+          icon_bathrooms: settings.iconBathrooms,
+          icon_garages: settings.iconGarages,
+          icon_energy_class: settings.iconEnergyClass,
+          icon_sqft: settings.iconSqft,
+          icon_living_space: settings.iconLivingSpace,
+          google_maps_api_key: settings.googleMapsApiKey,
+          xml_import_url: settings.xmlImportUrl,
+          typography_h1: typographyToJson(settings.typography_h1),
+          typography_h2: typographyToJson(settings.typography_h2),
+          typography_p: typographyToJson(settings.typography_p),
+          typography_title: typographyToJson(settings.typography_title),
+          typography_price: typographyToJson(settings.typography_price),
+          typography_label: typographyToJson(settings.typography_label),
+          typography_list: typographyToJson(settings.typography_list)
+        };
+        await agencySettingsService.createSettings(createData);
       }
 
       toast({
@@ -131,6 +135,14 @@ export const useAgencySettings = () => {
         title: "Success",
         description: "Background image uploaded successfully",
       });
+
+      // Save the settings immediately after uploading
+      if (settings.id) {
+        await agencySettingsService.updateSettings(settings.id, {
+          ...settings,
+          descriptionBackgroundUrl: url
+        });
+      }
     } catch (error) {
       console.error('Error uploading background image:', error);
       toast({
