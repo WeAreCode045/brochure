@@ -5,11 +5,32 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getOrCreateWebViewUrl } from "@/utils/webViewUtils";
 import { PropertyQROverlay } from "./PropertyQROverlay";
-import { ArrowUpRight, Pencil, Trash } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { 
+  ArrowUpRight, 
+  Pencil, 
+  Trash, 
+  Bell,
+  CheckCircle,
+  Clock
+} from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { format } from "date-fns";
 
 interface PropertyCardProps {
   property: any;
   onDelete: (id: string) => void;
+}
+
+interface Submission {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  inquiry_type: string;
+  message: string;
+  created_at: string;
+  is_read: boolean;
 }
 
 export const PropertyCard = ({
@@ -19,6 +40,9 @@ export const PropertyCard = ({
   const navigate = useNavigate();
   const [showQR, setShowQR] = useState(false);
   const [webViewUrl, setWebViewUrl] = useState<string | null>(null);
+  const [showSubmissions, setShowSubmissions] = useState(false);
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     const fetchWebViewUrl = async () => {
@@ -29,7 +53,60 @@ export const PropertyCard = ({
     };
     
     fetchWebViewUrl();
+    fetchSubmissions();
+
+    // Subscribe to new submissions
+    const channel = supabase
+      .channel('property_submissions')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'property_contact_submissions',
+          filter: `property_id=eq.${property.id}`,
+        },
+        () => {
+          fetchSubmissions();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [property.id]);
+
+  const fetchSubmissions = async () => {
+    const { data } = await supabase
+      .from('property_contact_submissions')
+      .select('*')
+      .eq('property_id', property.id)
+      .order('created_at', { ascending: false });
+
+    if (data) {
+      setSubmissions(data);
+      setUnreadCount(data.filter(s => !s.is_read).length);
+    }
+  };
+
+  const markAsRead = async (submissionId: string) => {
+    await supabase
+      .from('property_contact_submissions')
+      .update({ is_read: true })
+      .eq('id', submissionId);
+    
+    fetchSubmissions();
+  };
+
+  const getInquiryTypeLabel = (type: string) => {
+    const types: Record<string, string> = {
+      'information': 'Meer informatie',
+      'viewing': 'Bezichtiging',
+      'offer': 'Bod'
+    };
+    return types[type] || type;
+  };
 
   return (
     <>
@@ -82,8 +159,82 @@ export const PropertyCard = ({
           >
             <Trash className="h-4 w-4" />
           </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setShowSubmissions(true)}
+            className="relative"
+            title="Berichten"
+          >
+            <Bell className="h-4 w-4" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {unreadCount}
+              </span>
+            )}
+          </Button>
         </div>
       </Card>
+
+      <Dialog open={showSubmissions} onOpenChange={setShowSubmissions}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Berichten voor {property.title}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            {submissions.length === 0 ? (
+              <p className="text-center text-gray-500 py-4">Geen berichten gevonden</p>
+            ) : (
+              submissions.map((submission) => (
+                <div 
+                  key={submission.id} 
+                  className={`p-4 rounded-lg border ${submission.is_read ? 'bg-gray-50' : 'bg-blue-50 border-blue-200'}`}
+                >
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <h4 className="font-medium">{submission.name}</h4>
+                      <p className="text-sm text-gray-600">{getInquiryTypeLabel(submission.inquiry_type)}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-gray-500">
+                        {format(new Date(submission.created_at), 'dd/MM/yyyy HH:mm')}
+                      </span>
+                      {!submission.is_read && (
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => markAsRead(submission.id)}
+                          className="h-8"
+                        >
+                          <CheckCircle className="h-4 w-4 mr-1" />
+                          Markeer als gelezen
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 text-sm mb-2">
+                    <p>
+                      <span className="text-gray-600">E-mail:</span>{" "}
+                      <a href={`mailto:${submission.email}`} className="text-blue-600 hover:underline">
+                        {submission.email}
+                      </a>
+                    </p>
+                    <p>
+                      <span className="text-gray-600">Telefoon:</span>{" "}
+                      <a href={`tel:${submission.phone}`} className="text-blue-600 hover:underline">
+                        {submission.phone}
+                      </a>
+                    </p>
+                  </div>
+                  {submission.message && (
+                    <p className="text-sm mt-2 text-gray-700">{submission.message}</p>
+                  )}
+                </div>
+              ))
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

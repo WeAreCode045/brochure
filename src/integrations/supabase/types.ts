@@ -174,6 +174,53 @@ export type Database = {
         }
         Relationships: []
       }
+      property_contact_submissions: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          inquiry_type: string
+          is_read: boolean | null
+          message: string | null
+          name: string
+          phone: string
+          property_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          inquiry_type: string
+          is_read?: boolean | null
+          message?: string | null
+          name: string
+          phone: string
+          property_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          inquiry_type?: string
+          is_read?: boolean | null
+          message?: string | null
+          name?: string
+          phone?: string
+          property_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_contact_submissions_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       property_web_views: {
         Row: {
           created_at: string | null

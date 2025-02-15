@@ -1,4 +1,3 @@
-
 import { ContactForm } from "../ContactForm";
 import { WebViewSectionProps } from "../types";
 import { Button } from "@/components/ui/button";
@@ -94,13 +93,14 @@ export function ContactSection({ property, settings }: WebViewSectionProps) {
 
       {/* Contact Form */}
       <div className="rounded-xl shadow-lg p-8 text-white" style={{ backgroundColor: settings?.secondaryColor }}>
-        <h3 className="text-xl font-semibold mb-6">Interested in this property?</h3>
+        <h3 className="text-xl font-semibold mb-6">Interesse in deze woning?</h3>
         <ContactForm 
           agencyName={settings?.name}
           agencyAddress={settings?.address}
           agencyPhone={settings?.phone}
           agencyEmail={settings?.email}
           secondaryColor={settings?.secondaryColor}
+          propertyId={property.id}
         />
       </div>
     </div>
