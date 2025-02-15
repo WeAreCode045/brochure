@@ -8,6 +8,7 @@ import { DetailsSection } from "./sections/DetailsSection";
 import { FloorplansSection } from "./sections/FloorplansSection";
 import { ContactSection } from "./sections/ContactSection";
 import { AreasSection } from "./sections/AreasSection";
+import { NeighborhoodSection } from "./sections/NeighborhoodSection";
 import { WebViewHeader } from "./WebViewHeader";
 
 interface PropertyWebViewContentProps {
@@ -88,6 +89,18 @@ export function PropertyWebViewContent({
       )
     });
   }
+
+  // Add neighborhood section after floorplans
+  sections.push({
+    id: 'neighborhood',
+    title: 'Neighborhood',
+    content: (
+      <div className="space-y-4">
+        <WebViewHeader settings={settings} />
+        <NeighborhoodSection key={key} property={property} settings={settings} />
+      </div>
+    )
+  });
 
   sections.push({
     id: 'contact',
