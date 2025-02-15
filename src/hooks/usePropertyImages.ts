@@ -32,6 +32,28 @@ export function usePropertyImages(
     }
   };
 
+  const handleAreaPhotosUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      try {
+        const files = Array.from(e.target.files);
+        const uploadPromises = files.map(uploadFile);
+        const uploadedUrls = await Promise.all(uploadPromises);
+        
+        setFormData({
+          ...formData,
+          areaPhotos: [...(formData.areaPhotos || []), ...uploadedUrls]
+        });
+      } catch (error) {
+        console.error('Error uploading area photos:', error);
+        toast({
+          title: "Error",
+          description: "Failed to upload area photos",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
   const handleFloorplanUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       try {
@@ -61,6 +83,13 @@ export function usePropertyImages(
     });
   };
 
+  const handleRemoveAreaPhoto = (index: number) => {
+    setFormData({
+      ...formData,
+      areaPhotos: (formData.areaPhotos || []).filter((_, i) => i !== index)
+    });
+  };
+
   const handleRemoveFloorplan = (index: number) => {
     setFormData({
       ...formData,
@@ -84,8 +113,10 @@ export function usePropertyImages(
 
   return {
     handleImageUpload,
+    handleAreaPhotosUpload,
     handleFloorplanUpload,
     handleRemoveImage,
+    handleRemoveAreaPhoto,
     handleRemoveFloorplan,
     handleSetFeaturedImage,
     handleToggleGridImage

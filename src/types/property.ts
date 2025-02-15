@@ -37,7 +37,7 @@ export interface PropertyData {
   featuredImage: string | null;
   gridImages: string[];
   areas: PropertyArea[];
-  currentPath?: string; // Added this optional property
+  areaPhotos?: string[];
 }
 
 export interface PropertyFormData extends PropertyData {}

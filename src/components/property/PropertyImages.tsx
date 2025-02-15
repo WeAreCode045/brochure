@@ -9,10 +9,13 @@ interface PropertyImagesProps {
   floorplans: string[];
   featuredImage: string | null;
   gridImages: string[];
+  areaPhotos?: string[];
   onImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onFloorplanUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onAreaPhotosUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onRemoveImage: (index: number) => void;
   onRemoveFloorplan: (index: number) => void;
+  onRemoveAreaPhoto: (index: number) => void;
   onSetFeaturedImage: (url: string | null) => void;
   onToggleGridImage: (gridImages: string[]) => void;
 }
@@ -22,10 +25,13 @@ export function PropertyImages({
   floorplans,
   featuredImage,
   gridImages,
+  areaPhotos = [],
   onImageUpload,
   onFloorplanUpload,
+  onAreaPhotosUpload,
   onRemoveImage,
   onRemoveFloorplan,
+  onRemoveAreaPhoto,
   onSetFeaturedImage,
   onToggleGridImage
 }: PropertyImagesProps) {
@@ -118,6 +124,37 @@ export function PropertyImages({
         <Input
           type="file"
           onChange={onImageUpload}
+          accept="image/*"
+          multiple
+          className="mt-2"
+        />
+      </div>
+
+      <div className="space-y-4">
+        <Label>Area Photos (Max 6)</Label>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {areaPhotos.map((url, index) => (
+            <div key={url} className="relative group">
+              <img
+                src={url}
+                alt={`Area photo ${index + 1}`}
+                className="w-full h-32 object-cover rounded-lg"
+              />
+              <Button
+                type="button"
+                variant="destructive"
+                size="icon"
+                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity w-6 h-6"
+                onClick={() => onRemoveAreaPhoto(index)}
+              >
+                <Trash2 className="h-3 w-3" />
+              </Button>
+            </div>
+          ))}
+        </div>
+        <Input
+          type="file"
+          onChange={onAreaPhotosUpload}
           accept="image/*"
           multiple
           className="mt-2"

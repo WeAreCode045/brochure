@@ -27,8 +27,10 @@ export function PropertyForm({ onSubmit }: PropertyFormProps) {
   
   const {
     handleImageUpload,
+    handleAreaPhotosUpload,
     handleFloorplanUpload,
     handleRemoveImage,
+    handleRemoveAreaPhoto,
     handleRemoveFloorplan,
     handleSetFeaturedImage,
     handleToggleGridImage
@@ -47,7 +49,6 @@ export function PropertyForm({ onSubmit }: PropertyFormProps) {
     setFormData({ ...formData, [name]: value });
   };
 
-  // Early return while data is loading
   if (!formData) {
     return null;
   }
@@ -84,11 +85,14 @@ export function PropertyForm({ onSubmit }: PropertyFormProps) {
         <PropertyImages
           images={formData.images}
           floorplans={formData.floorplans}
+          areaPhotos={formData.areaPhotos}
           featuredImage={formData.featuredImage}
           gridImages={formData.gridImages}
           onImageUpload={handleImageUpload}
+          onAreaPhotosUpload={handleAreaPhotosUpload}
           onFloorplanUpload={handleFloorplanUpload}
           onRemoveImage={handleRemoveImage}
+          onRemoveAreaPhoto={handleRemoveAreaPhoto}
           onRemoveFloorplan={handleRemoveFloorplan}
           onSetFeaturedImage={handleSetFeaturedImage}
           onToggleGridImage={handleToggleGridImage}
