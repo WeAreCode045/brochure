@@ -37,7 +37,6 @@ export const useAgencySettings = () => {
       } else {
         const createData = {
           name: settings.name,
-          agent_name: settings.agentName,
           email: settings.email,
           phone: settings.phone,
           address: settings.address,

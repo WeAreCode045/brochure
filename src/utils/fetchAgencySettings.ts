@@ -2,6 +2,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { AgencySettings, Agent } from "@/types/agency";
 import { defaultAgencySettings } from "./defaultAgencySettings";
+import { Json } from "@/integrations/supabase/types";
 
 export async function fetchAgencySettings(): Promise<AgencySettings | null> {
   const { data, error } = await supabase
@@ -17,7 +18,14 @@ export async function fetchAgencySettings(): Promise<AgencySettings | null> {
   if (!data) return null;
 
   // Ensure agents is an array and has the correct shape
-  const agents: Agent[] = Array.isArray(data.agents) ? data.agents : [];
+  const agents: Agent[] = Array.isArray(data.agents) 
+    ? (data.agents as Json[]).map((agent: any) => ({
+        name: agent.name || "",
+        phone: agent.phone || "",
+        email: agent.email || "",
+        whatsapp: agent.whatsapp || ""
+      }))
+    : [];
 
   return {
     id: String(data.id),
