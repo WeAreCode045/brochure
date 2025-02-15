@@ -20,14 +20,14 @@ serve(async (req) => {
       throw new Error('Missing required parameters: address or apiKey')
     }
 
-    console.log('Fetching data for address:', address) // Add logging
+    console.log('Fetching data for address:', address)
 
     // First, geocode the address
     const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`
     const geocodeResponse = await fetch(geocodeUrl)
     const geocodeData = await geocodeResponse.json()
 
-    console.log('Geocode response:', geocodeData) // Add logging
+    console.log('Geocode response:', geocodeData)
 
     if (!geocodeData.results?.[0]?.geometry?.location) {
       throw new Error('Could not geocode address')
@@ -37,18 +37,19 @@ serve(async (req) => {
 
     // Types of places to search for
     const placeTypes = {
-      restaurants: 'restaurant',
-      schools: 'school',
-      transit: 'transit_station',
-      shopping: 'shopping_mall'
+      education: 'school',
+      shopping: 'shopping_mall',
+      train: 'train_station',
+      bus: 'bus_station',
+      sports: 'gym',
     }
 
     const placesData: { [key: string]: any[] } = {}
 
     // Fetch places for each type
     for (const [key, type] of Object.entries(placeTypes)) {
-      console.log(`Fetching ${key} data...`) // Add logging
-      const nearbyUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=1500&type=${type}&key=${apiKey}`
+      console.log(`Fetching ${key} data...`)
+      const nearbyUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=2000&type=${type}&key=${apiKey}`
       const response = await fetch(nearbyUrl)
       const data = await response.json()
       
@@ -57,15 +58,30 @@ serve(async (req) => {
           types: place.types,
           vicinity: place.vicinity,
           name: place.name,
-          rating: place.rating
+          rating: place.rating,
+          photos: place.photos?.map((photo: any) => 
+            `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo.photo_reference}&key=${apiKey}`
+          ) || []
         }))
       }
     }
 
-    console.log('Successfully fetched all places data') // Add logging
+    // Get area photos
+    const photoSearchUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=1000&key=${apiKey}`
+    const photoResponse = await fetch(photoSearchUrl)
+    const photoData = await photoResponse.json()
+    
+    const areaPhotos = photoData.results
+      ?.filter((place: any) => place.photos)
+      .slice(0, 3)
+      .map((place: any) => 
+        `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${place.photos[0].photo_reference}&key=${apiKey}`
+      ) || []
+
+    console.log('Successfully fetched all places data')
 
     return new Response(
-      JSON.stringify(placesData),
+      JSON.stringify({ ...placesData, areaPhotos }),
       { 
         headers: { 
           ...corsHeaders,
@@ -74,7 +90,7 @@ serve(async (req) => {
       }
     )
   } catch (error) {
-    console.error('Error in nearby-places function:', error) // Add logging
+    console.error('Error in nearby-places function:', error)
     return new Response(
       JSON.stringify({ error: error.message }), 
       { 

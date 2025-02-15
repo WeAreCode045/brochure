@@ -2,22 +2,34 @@
 import { WebViewSectionProps } from "../types";
 import { useEffect, useState } from "react";
 import supabase from "@/utils/supabase";
+import { School, ShoppingBag, Train, Bus, Dumbbell } from "lucide-react";
+import { WebViewImageGrid } from "../WebViewImageGrid";
 
 interface PlaceDetails {
   types: string[];
   vicinity?: string;
   name?: string;
   rating?: number;
+  photos?: string[];
+}
+
+interface PlacesData {
+  education: PlaceDetails[];
+  shopping: PlaceDetails[];
+  train: PlaceDetails[];
+  bus: PlaceDetails[];
+  sports: PlaceDetails[];
+  areaPhotos: string[];
 }
 
 export function NeighborhoodSection({ property, settings }: WebViewSectionProps) {
-  const [nearbyPlaces, setNearbyPlaces] = useState<{
-    [key: string]: PlaceDetails[];
-  }>({
-    restaurants: [],
-    schools: [],
-    transit: [],
-    shopping: []
+  const [placesData, setPlacesData] = useState<PlacesData>({
+    education: [],
+    shopping: [],
+    train: [],
+    bus: [],
+    sports: [],
+    areaPhotos: []
   });
   const [loading, setLoading] = useState(true);
 
@@ -38,7 +50,7 @@ export function NeighborhoodSection({ property, settings }: WebViewSectionProps)
         }
 
         if (data) {
-          setNearbyPlaces(data);
+          setPlacesData(data);
         }
       } catch (error) {
         console.error('Error fetching nearby places:', error);
@@ -50,12 +62,15 @@ export function NeighborhoodSection({ property, settings }: WebViewSectionProps)
     fetchNearbyPlaces();
   }, [property.address, settings?.googleMapsApiKey]);
 
-  const renderPlacesList = (places: PlaceDetails[], title: string) => {
+  const renderPlacesList = (places: PlaceDetails[], title: string, Icon: React.ElementType) => {
     if (places.length === 0) return null;
 
     return (
       <div>
-        <h4 className="font-semibold mb-2 text-gray-700">{title}</h4>
+        <h4 className="font-semibold mb-2 text-gray-700 flex items-center gap-2">
+          <Icon className="w-5 h-5" style={{ color: settings?.secondaryColor }} />
+          {title}
+        </h4>
         <ul className="list-disc list-inside space-y-1">
           {places.map((place, index) => (
             <li key={index} className="text-gray-600">
@@ -69,7 +84,13 @@ export function NeighborhoodSection({ property, settings }: WebViewSectionProps)
   };
 
   return (
-    <div className="space-y-4 px-6 pb-24">
+    <div className="space-y-6 px-6 pb-24">
+      {placesData.areaPhotos.length > 0 && (
+        <div className="mb-8">
+          <WebViewImageGrid images={placesData.areaPhotos} settings={settings} />
+        </div>
+      )}
+      
       <div className="relative">
         <h3 
           className="text-xl font-semibold mb-4"
@@ -82,10 +103,11 @@ export function NeighborhoodSection({ property, settings }: WebViewSectionProps)
             <div className="text-center py-4">Locatie informatie laden...</div>
           ) : (
             <div className="mt-4 grid grid-cols-2 gap-6">
-              {renderPlacesList(nearbyPlaces.restaurants, "Restaurants in de buurt")}
-              {renderPlacesList(nearbyPlaces.schools, "Onderwijsinstellingen")}
-              {renderPlacesList(nearbyPlaces.transit, "Openbaar Vervoer")}
-              {renderPlacesList(nearbyPlaces.shopping, "Winkels")}
+              {renderPlacesList(placesData.education, "Onderwijsinstellingen", School)}
+              {renderPlacesList(placesData.shopping, "Winkelcentra", ShoppingBag)}
+              {renderPlacesList(placesData.train, "Treinstations", Train)}
+              {renderPlacesList(placesData.bus, "Busstations", Bus)}
+              {renderPlacesList(placesData.sports, "Sportfaciliteiten", Dumbbell)}
             </div>
           )}
         </div>
