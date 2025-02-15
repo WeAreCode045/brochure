@@ -50,13 +50,26 @@ export function PropertyWebViewContent({
     }
   ];
 
+  // Add area sections if there are areas
   if (property.areas && property.areas.length > 0) {
     const areaPages = Math.ceil(property.areas.length / 2);
     for (let i = 0; i < areaPages; i++) {
       sections.push({
         id: `areas-${i}`,
         title: `Areas ${i + 1}`,
-        content: <AreasSection key={`${key}-areas-${i}`} property={property} settings={settings} />
+        content: (
+          <AreasSection 
+            key={`${key}-areas-${i}`} 
+            property={{
+              ...property,
+              settings: { 
+                ...property.settings,
+                currentPath: `areas-${i}`
+              }
+            }} 
+            settings={settings} 
+          />
+        )
       });
     }
   }
