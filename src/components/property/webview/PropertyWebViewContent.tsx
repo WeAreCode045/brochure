@@ -48,16 +48,6 @@ export function PropertyWebViewContent({
           <DetailsSection key={key} property={property} settings={settings} />
         </div>
       )
-    },
-    {
-      id: 'floorplans',
-      title: 'Floorplans',
-      content: (
-        <div className="space-y-4">
-          <WebViewHeader settings={settings} />
-          <FloorplansSection key={key} property={property} settings={settings} />
-        </div>
-      )
     }
   ];
 
@@ -85,6 +75,20 @@ export function PropertyWebViewContent({
     }
   }
 
+  // Add floorplans section after areas
+  if (property.floorplans && property.floorplans.length > 0) {
+    sections.push({
+      id: 'floorplans',
+      title: 'Floorplans',
+      content: (
+        <div className="space-y-4">
+          <WebViewHeader settings={settings} />
+          <FloorplansSection key={key} property={property} settings={settings} />
+        </div>
+      )
+    });
+  }
+
   sections.push({
     id: 'contact',
     title: 'Contact',
@@ -96,21 +100,16 @@ export function PropertyWebViewContent({
     )
   });
 
-  const filteredSections = sections.filter(section => {
-    if (section.id === 'floorplans' && (!property.floorplans || property.floorplans.length === 0)) return false;
-    return true;
-  });
-
   return (
     <>
       <div className="h-full flex flex-col">
         <div className="flex-1 overflow-y-auto">
-          {filteredSections[currentPage]?.content}
+          {sections[currentPage]?.content}
         </div>
 
         <WebViewFooter 
           currentPage={currentPage}
-          totalPages={filteredSections.length}
+          totalPages={sections.length}
           onPrevious={() => setCurrentPage(currentPage - 1)}
           onNext={() => setCurrentPage(currentPage + 1)}
           onShare={(platform) => handleShare(platform)}
