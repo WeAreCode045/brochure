@@ -43,6 +43,7 @@ export const useAgencySettings = () => {
         primary_color: settings.primaryColor,
         secondary_color: settings.secondaryColor,
         logo_url: logoUrl,
+        description_background_url: settings.descriptionBackgroundUrl,
         icon_build_year: settings.iconBuildYear,
         icon_bedrooms: settings.iconBedrooms,
         icon_bathrooms: settings.iconBathrooms,
@@ -113,6 +114,33 @@ export const useAgencySettings = () => {
     }));
   };
 
+  const handleDescriptionBackgroundUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const filename = `description-bg-${Date.now()}.${file.name.split('.').pop()}`;
+      const url = await agencySettingsService.uploadDescriptionBackground(file, filename);
+      
+      setSettings(prev => ({
+        ...prev,
+        descriptionBackgroundUrl: url
+      }));
+
+      toast({
+        title: "Success",
+        description: "Background image uploaded successfully",
+      });
+    } catch (error) {
+      console.error('Error uploading background image:', error);
+      toast({
+        title: "Error",
+        description: "Failed to upload background image",
+        variant: "destructive",
+      });
+    }
+  };
+
   useEffect(() => {
     const loadSettings = async () => {
       const data = await fetchAgencySettings();
@@ -135,5 +163,6 @@ export const useAgencySettings = () => {
     handleSelectChange,
     handleTypographyChange,
     handleLogoUpload,
+    handleDescriptionBackgroundUpload,
   };
 };

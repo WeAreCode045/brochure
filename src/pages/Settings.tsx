@@ -18,6 +18,7 @@ const Settings = () => {
     handleSelectChange,
     handleTypographyChange,
     handleLogoUpload,
+    handleDescriptionBackgroundUpload,
   } = useAgencySettings();
 
   return (
@@ -60,6 +61,7 @@ const Settings = () => {
             onChange={handleChange}
             onSelectChange={handleSelectChange}
             onTypographyChange={handleTypographyChange}
+            onDescriptionBackgroundUpload={handleDescriptionBackgroundUpload}
           />
         )}
         

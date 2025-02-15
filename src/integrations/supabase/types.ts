@@ -14,6 +14,7 @@ export type Database = {
           address: string | null
           agent_name: string | null
           created_at: string
+          description_background_url: string | null
           email: string | null
           google_maps_api_key: string | null
           icon_bathrooms: string | null
@@ -43,6 +44,7 @@ export type Database = {
           address?: string | null
           agent_name?: string | null
           created_at?: string
+          description_background_url?: string | null
           email?: string | null
           google_maps_api_key?: string | null
           icon_bathrooms?: string | null
@@ -72,6 +74,7 @@ export type Database = {
           address?: string | null
           agent_name?: string | null
           created_at?: string
+          description_background_url?: string | null
           email?: string | null
           google_maps_api_key?: string | null
           icon_bathrooms?: string | null
