@@ -21,7 +21,7 @@ export function DetailsSection({ property, settings }: WebViewSectionProps) {
       </div>
 
       {property.features && property.features.length > 0 && (
-        <div className="p-6">
+        <div className="p-6 mb-6">
           <h3 className="text-xl font-semibold mb-4">Features</h3>
           <div 
             className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 rounded-lg text-xs"
