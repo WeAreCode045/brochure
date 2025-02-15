@@ -13,7 +13,7 @@ import { useProperties } from "@/hooks/useProperties";
 import { PropertyData } from "@/types/property";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ChevronLeft } from "lucide-react";
-import { supabase } from "@/utils/supabase";
+import supabase from "@/utils/supabase";
 import {
   Breadcrumb,
   BreadcrumbItem,
