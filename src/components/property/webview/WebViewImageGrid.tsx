@@ -5,13 +5,16 @@ interface WebViewImageGridProps {
     primaryColor?: string;
     secondaryColor?: string;
   };
+  isLocationGrid?: boolean;
 }
 
-export function WebViewImageGrid({ images, settings }: WebViewImageGridProps) {
+export function WebViewImageGrid({ images, settings, isLocationGrid = false }: WebViewImageGridProps) {
   if (!images || images.length === 0) return null;
 
-  const overlayColor = settings?.primaryColor || '#E2E8F0';
-  const overlayStyle = { backgroundColor: `${overlayColor}80` }; // 80 adds 50% opacity
+  const overlayColor = isLocationGrid 
+    ? settings?.primaryColor || '#E2E8F0'
+    : settings?.secondaryColor || '#E2E8F0';
+  const overlayStyle = { backgroundColor: `${overlayColor}A6` }; // A6 adds 65% opacity
 
   return (
     <div className="grid grid-cols-3 gap-4 px-6">

@@ -19,7 +19,7 @@ export function OverviewSection({ property, settings }: WebViewSectionProps) {
               />
             </div>
 
-            <WebViewImageGrid images={property.gridImages} settings={settings} />
+            <WebViewImageGrid images={property.gridImages} settings={settings} isLocationGrid={false} />
 
             <div 
               className="relative py-4 px-6 shadow-lg w-full"

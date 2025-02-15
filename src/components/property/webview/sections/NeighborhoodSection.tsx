@@ -97,7 +97,7 @@ export function NeighborhoodSection({ property, settings }: WebViewSectionProps)
     <div className="space-y-6 pb-24">
       {property.areaPhotos && property.areaPhotos.length > 0 && (
         <div className="mb-8 w-full">
-          <WebViewImageGrid images={property.areaPhotos} settings={settings} />
+          <WebViewImageGrid images={property.areaPhotos} settings={settings} isLocationGrid={true} />
         </div>
       )}
       
