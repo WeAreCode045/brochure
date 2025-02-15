@@ -28,7 +28,7 @@ export function AreasSection({ property, settings }: WebViewSectionProps) {
               </div>
 
               {area.images && area.images.length > 0 && (
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                   {area.images.map((image, imgIndex) => (
                     <img
                       key={imgIndex}

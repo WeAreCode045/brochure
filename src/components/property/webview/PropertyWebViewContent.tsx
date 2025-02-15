@@ -5,7 +5,6 @@ import { AgencySettings } from "@/types/agency";
 import { WebViewFooter } from "./WebViewFooter";
 import { OverviewSection } from "./sections/OverviewSection";
 import { DetailsSection } from "./sections/DetailsSection";
-import { PhotosSection } from "./sections/PhotosSection";
 import { FloorplansSection } from "./sections/FloorplansSection";
 import { ContactSection } from "./sections/ContactSection";
 import { AreasSection } from "./sections/AreasSection";
@@ -45,11 +44,6 @@ export function PropertyWebViewContent({
       content: <DetailsSection key={key} property={property} settings={settings} />
     },
     {
-      id: 'photos',
-      title: 'Photos',
-      content: <PhotosSection key={key} property={property} settings={settings} />
-    },
-    {
       id: 'floorplans',
       title: 'Floorplans',
       content: <FloorplansSection key={key} property={property} settings={settings} />
@@ -74,7 +68,6 @@ export function PropertyWebViewContent({
   });
 
   const filteredSections = sections.filter(section => {
-    if (section.id === 'photos' && (!property.images || property.images.length === 0)) return false;
     if (section.id === 'floorplans' && (!property.floorplans || property.floorplans.length === 0)) return false;
     return true;
   });
