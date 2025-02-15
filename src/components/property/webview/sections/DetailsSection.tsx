@@ -26,7 +26,7 @@ export function DetailsSection({ property, settings }: WebViewSectionProps) {
           <div 
             className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 rounded-lg text-sm"
             style={{ 
-              backgroundColor: settings?.secondaryColor || '#0EA5E9',
+              backgroundColor: settings?.primaryColor || '#0EA5E9',
             }}
           >
             {property.features.map((feature, index) => (
