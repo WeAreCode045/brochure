@@ -1,5 +1,4 @@
 
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useAgencySettings } from "@/hooks/useAgencySettings";
 import { WebViewFooter } from "./webview/WebViewFooter";
 import { OverviewSection } from "./webview/sections/OverviewSection";
@@ -8,10 +7,18 @@ import { PhotosSection } from "./webview/sections/PhotosSection";
 import { FloorplansSection } from "./webview/sections/FloorplansSection";
 import { ContactSection } from "./webview/sections/ContactSection";
 import { usePropertyWebView } from "./webview/usePropertyWebView";
-import { WebViewDialogProps } from "./webview/types";
+import { useNavigate, useParams } from "react-router-dom";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { useProperties } from "@/hooks/useProperties";
 
-export function PropertyWebView({ property, open, onOpenChange }: WebViewDialogProps) {
+export function PropertyWebView() {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const { settings } = useAgencySettings();
+  const { properties } = useProperties();
+  
+  const property = properties?.find(p => p.id === id);
+  
   const {
     selectedImage,
     setSelectedImage,
@@ -20,6 +27,10 @@ export function PropertyWebView({ property, open, onOpenChange }: WebViewDialogP
     handleShare,
     handlePrint
   } = usePropertyWebView();
+
+  if (!property) {
+    return <div>Property not found</div>;
+  }
 
   // Force re-render when page changes
   const key = `page-${currentPage}`;
@@ -60,27 +71,22 @@ export function PropertyWebView({ property, open, onOpenChange }: WebViewDialogP
 
   return (
     <>
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-[595px] h-[842px] p-0 overflow-hidden">
-          <DialogTitle className="sr-only">
-            {filteredSections[currentPage]?.title}
-          </DialogTitle>
-          <div className="h-full flex flex-col">
-            <div className="flex-1 overflow-y-auto">
-              {filteredSections[currentPage]?.content}
-            </div>
-
-            <WebViewFooter 
-              currentPage={currentPage}
-              totalPages={filteredSections.length}
-              onPrevious={() => setCurrentPage(prev => prev - 1)}
-              onNext={() => setCurrentPage(prev => prev + 1)}
-              onShare={handleShare}
-              onPrint={handlePrint}
-            />
+      <div className="max-w-[595px] h-[842px] mx-auto my-8 bg-white shadow-lg overflow-hidden">
+        <div className="h-full flex flex-col">
+          <div className="flex-1 overflow-y-auto">
+            {filteredSections[currentPage]?.content}
           </div>
-        </DialogContent>
-      </Dialog>
+
+          <WebViewFooter 
+            currentPage={currentPage}
+            totalPages={filteredSections.length}
+            onPrevious={() => setCurrentPage(prev => prev - 1)}
+            onNext={() => setCurrentPage(prev => prev + 1)}
+            onShare={handleShare}
+            onPrint={handlePrint}
+          />
+        </div>
+      </div>
 
       {selectedImage && (
         <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
