@@ -1,4 +1,3 @@
-
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AgencySettings } from "@/types/agency";
@@ -53,7 +52,19 @@ const faIcons = {
   leaf: faLeaf,
 };
 
-const iconOptions = [...Object.keys(icons).sort(), ...Object.keys(faIcons).sort()];
+const lucideIconOptions = Object.keys(icons).sort().map(icon => ({
+  id: `lucide-${icon}`,
+  name: icon,
+  source: 'lucide'
+}));
+
+const faIconOptions = Object.keys(faIcons).sort().map(icon => ({
+  id: `fa-${icon}`,
+  name: icon,
+  source: 'fa'
+}));
+
+const iconOptions = [...lucideIconOptions, ...faIconOptions].sort((a, b) => a.name.localeCompare(b.name));
 
 export const IconSettings = ({ settings, onSelectChange }: IconSettingsProps) => {
   return (
@@ -77,11 +88,11 @@ export const IconSettings = ({ settings, onSelectChange }: IconSettingsProps) =>
             </SelectTrigger>
             <SelectContent>
               {iconOptions.map((icon) => (
-                <SelectItem key={icon} value={icon.toLowerCase()} className="flex items-center">
-                  {faIcons[icon as keyof typeof faIcons] ? (
-                    <FontAwesomeIcon icon={faIcons[icon as keyof typeof faIcons]} className="mr-2" />
+                <SelectItem key={icon.id} value={icon.name} className="flex items-center">
+                  {icon.source === 'fa' && faIcons[icon.name as keyof typeof faIcons] ? (
+                    <FontAwesomeIcon icon={faIcons[icon.name as keyof typeof faIcons]} className="mr-2" />
                   ) : null}
-                  {icon}
+                  {icon.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -104,11 +115,11 @@ export const IconSettings = ({ settings, onSelectChange }: IconSettingsProps) =>
             </SelectTrigger>
             <SelectContent>
               {iconOptions.map((icon) => (
-                <SelectItem key={icon} value={icon.toLowerCase()} className="flex items-center">
-                  {faIcons[icon as keyof typeof faIcons] ? (
-                    <FontAwesomeIcon icon={faIcons[icon as keyof typeof faIcons]} className="mr-2" />
+                <SelectItem key={icon.id} value={icon.name} className="flex items-center">
+                  {icon.source === 'fa' && faIcons[icon.name as keyof typeof faIcons] ? (
+                    <FontAwesomeIcon icon={faIcons[icon.name as keyof typeof faIcons]} className="mr-2" />
                   ) : null}
-                  {icon}
+                  {icon.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -131,11 +142,11 @@ export const IconSettings = ({ settings, onSelectChange }: IconSettingsProps) =>
             </SelectTrigger>
             <SelectContent>
               {iconOptions.map((icon) => (
-                <SelectItem key={icon} value={icon.toLowerCase()} className="flex items-center">
-                  {faIcons[icon as keyof typeof faIcons] ? (
-                    <FontAwesomeIcon icon={faIcons[icon as keyof typeof faIcons]} className="mr-2" />
+                <SelectItem key={icon.id} value={icon.name} className="flex items-center">
+                  {icon.source === 'fa' && faIcons[icon.name as keyof typeof faIcons] ? (
+                    <FontAwesomeIcon icon={faIcons[icon.name as keyof typeof faIcons]} className="mr-2" />
                   ) : null}
-                  {icon}
+                  {icon.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -158,11 +169,11 @@ export const IconSettings = ({ settings, onSelectChange }: IconSettingsProps) =>
             </SelectTrigger>
             <SelectContent>
               {iconOptions.map((icon) => (
-                <SelectItem key={icon} value={icon.toLowerCase()} className="flex items-center">
-                  {faIcons[icon as keyof typeof faIcons] ? (
-                    <FontAwesomeIcon icon={faIcons[icon as keyof typeof faIcons]} className="mr-2" />
+                <SelectItem key={icon.id} value={icon.name} className="flex items-center">
+                  {icon.source === 'fa' && faIcons[icon.name as keyof typeof faIcons] ? (
+                    <FontAwesomeIcon icon={faIcons[icon.name as keyof typeof faIcons]} className="mr-2" />
                   ) : null}
-                  {icon}
+                  {icon.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -185,11 +196,11 @@ export const IconSettings = ({ settings, onSelectChange }: IconSettingsProps) =>
             </SelectTrigger>
             <SelectContent>
               {iconOptions.map((icon) => (
-                <SelectItem key={icon} value={icon.toLowerCase()} className="flex items-center">
-                  {faIcons[icon as keyof typeof faIcons] ? (
-                    <FontAwesomeIcon icon={faIcons[icon as keyof typeof faIcons]} className="mr-2" />
+                <SelectItem key={icon.id} value={icon.name} className="flex items-center">
+                  {icon.source === 'fa' && faIcons[icon.name as keyof typeof faIcons] ? (
+                    <FontAwesomeIcon icon={faIcons[icon.name as keyof typeof faIcons]} className="mr-2" />
                   ) : null}
-                  {icon}
+                  {icon.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -212,11 +223,11 @@ export const IconSettings = ({ settings, onSelectChange }: IconSettingsProps) =>
             </SelectTrigger>
             <SelectContent>
               {iconOptions.map((icon) => (
-                <SelectItem key={icon} value={icon.toLowerCase()} className="flex items-center">
-                  {faIcons[icon as keyof typeof faIcons] ? (
-                    <FontAwesomeIcon icon={faIcons[icon as keyof typeof faIcons]} className="mr-2" />
+                <SelectItem key={icon.id} value={icon.name} className="flex items-center">
+                  {icon.source === 'fa' && faIcons[icon.name as keyof typeof faIcons] ? (
+                    <FontAwesomeIcon icon={faIcons[icon.name as keyof typeof faIcons]} className="mr-2" />
                   ) : null}
-                  {icon}
+                  {icon.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -239,11 +250,11 @@ export const IconSettings = ({ settings, onSelectChange }: IconSettingsProps) =>
             </SelectTrigger>
             <SelectContent>
               {iconOptions.map((icon) => (
-                <SelectItem key={icon} value={icon.toLowerCase()} className="flex items-center">
-                  {faIcons[icon as keyof typeof faIcons] ? (
-                    <FontAwesomeIcon icon={faIcons[icon as keyof typeof faIcons]} className="mr-2" />
+                <SelectItem key={icon.id} value={icon.name} className="flex items-center">
+                  {icon.source === 'fa' && faIcons[icon.name as keyof typeof faIcons] ? (
+                    <FontAwesomeIcon icon={faIcons[icon.name as keyof typeof faIcons]} className="mr-2" />
                   ) : null}
-                  {icon}
+                  {icon.name}
                 </SelectItem>
               ))}
             </SelectContent>
