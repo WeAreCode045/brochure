@@ -8,6 +8,7 @@ import { DetailsSection } from "./sections/DetailsSection";
 import { FloorplansSection } from "./sections/FloorplansSection";
 import { ContactSection } from "./sections/ContactSection";
 import { AreasSection } from "./sections/AreasSection";
+import { WebViewHeader } from "./WebViewHeader";
 
 interface PropertyWebViewContentProps {
   property: PropertyData;
@@ -36,7 +37,12 @@ export function PropertyWebViewContent({
     {
       id: 'overview',
       title: 'Overview',
-      content: <OverviewSection key={key} property={property} settings={settings} />
+      content: (
+        <div className="space-y-4">
+          <WebViewHeader settings={settings} />
+          <OverviewSection key={key} property={property} settings={settings} />
+        </div>
+      )
     },
     {
       id: 'details',
@@ -46,7 +52,12 @@ export function PropertyWebViewContent({
     {
       id: 'floorplans',
       title: 'Floorplans',
-      content: <FloorplansSection key={key} property={property} settings={settings} />
+      content: (
+        <div className="space-y-4">
+          <WebViewHeader settings={settings} />
+          <FloorplansSection key={key} property={property} settings={settings} />
+        </div>
+      )
     }
   ];
 
@@ -58,17 +69,17 @@ export function PropertyWebViewContent({
         id: `areas-${i}`,
         title: `Areas ${i + 1}`,
         content: (
-          <AreasSection 
-            key={`${key}-areas-${i}`} 
-            property={{
-              ...property,
-              settings: { 
-                ...property.settings,
+          <div className="space-y-4">
+            <WebViewHeader settings={settings} />
+            <AreasSection 
+              key={`${key}-areas-${i}`} 
+              property={{
+                ...property,
                 currentPath: `areas-${i}`
-              }
-            }} 
-            settings={settings} 
-          />
+              }} 
+              settings={settings} 
+            />
+          </div>
         )
       });
     }
@@ -77,7 +88,12 @@ export function PropertyWebViewContent({
   sections.push({
     id: 'contact',
     title: 'Contact',
-    content: <ContactSection key={key} property={property} settings={settings} />
+    content: (
+      <div className="space-y-4">
+        <WebViewHeader settings={settings} />
+        <ContactSection key={key} property={property} settings={settings} />
+      </div>
+    )
   });
 
   const filteredSections = sections.filter(section => {
