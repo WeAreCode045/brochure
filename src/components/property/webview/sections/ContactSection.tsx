@@ -14,7 +14,7 @@ export function ContactSection({ property, settings }: WebViewSectionProps) {
               height="100%"
               frameBorder="0"
               style={{ border: 0 }}
-              src={`https://www.google.com/maps/embed/v1/place?key=${settings.googleMapsApiKey}&q=${encodeURIComponent(property.address)}`}
+              src={`https://www.google.com/maps/embed/v1/place?key=${settings.googleMapsApiKey}&q=${encodeURIComponent(property.address)}&disableDefaultUI=1`}
               allowFullScreen
             ></iframe>
           </div>
