@@ -50,15 +50,6 @@ export const AgencyFields = ({ settings, onChange, onAgentChange }: AgencyFields
         />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="agentName">Agent Name</Label>
-        <Input
-          id="agentName"
-          name="agentName"
-          value={settings.agentName}
-          onChange={onChange}
-        />
-      </div>
-      <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input
           id="email"
@@ -85,6 +76,43 @@ export const AgencyFields = ({ settings, onChange, onAgentChange }: AgencyFields
           value={settings.address}
           onChange={onChange}
         />
+      </div>
+
+      <div className="space-y-4 mt-8">
+        <h3 className="font-semibold">Social Media</h3>
+        <div className="space-y-2">
+          <Label htmlFor="instagramUrl">Instagram URL</Label>
+          <Input
+            id="instagramUrl"
+            name="instagramUrl"
+            type="url"
+            value={settings.instagramUrl}
+            onChange={onChange}
+            placeholder="https://instagram.com/youragency"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="youtubeUrl">YouTube URL</Label>
+          <Input
+            id="youtubeUrl"
+            name="youtubeUrl"
+            type="url"
+            value={settings.youtubeUrl}
+            onChange={onChange}
+            placeholder="https://youtube.com/@youragency"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="facebookUrl">Facebook URL</Label>
+          <Input
+            id="facebookUrl"
+            name="facebookUrl"
+            type="url"
+            value={settings.facebookUrl}
+            onChange={onChange}
+            placeholder="https://facebook.com/youragency"
+          />
+        </div>
       </div>
 
       <div className="space-y-4 mt-8">

@@ -9,7 +9,6 @@ export interface Agent {
 export interface AgencySettings {
   id?: string;
   name: string;
-  agentName: string;
   email: string;
   phone: string;
   address: string;
@@ -27,4 +26,7 @@ export interface AgencySettings {
   googleMapsApiKey?: string;
   xmlImportUrl?: string;
   agents: Agent[];
+  instagramUrl?: string;
+  youtubeUrl?: string;
+  facebookUrl?: string;
 }

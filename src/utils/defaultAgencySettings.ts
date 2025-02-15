@@ -3,7 +3,6 @@ import { AgencySettings } from "@/types/agency";
 
 export const defaultAgencySettings: AgencySettings = {
   name: "",
-  agentName: "",
   email: "",
   phone: "",
   address: "",
@@ -18,5 +17,8 @@ export const defaultAgencySettings: AgencySettings = {
   iconLivingSpace: "home",
   googleMapsApiKey: "",
   xmlImportUrl: "",
-  agents: []
+  agents: [],
+  instagramUrl: "",
+  youtubeUrl: "",
+  facebookUrl: ""
 };

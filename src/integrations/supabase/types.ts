@@ -12,11 +12,11 @@ export type Database = {
       agency_settings: {
         Row: {
           address: string | null
-          agent_name: string | null
           agents: Json | null
           created_at: string
           description_background_url: string | null
           email: string | null
+          facebook_url: string | null
           google_maps_api_key: string | null
           icon_bathrooms: string | null
           icon_bedrooms: string | null
@@ -26,6 +26,7 @@ export type Database = {
           icon_living_space: string | null
           icon_sqft: string | null
           id: string
+          instagram_url: string | null
           logo_url: string | null
           name: string
           phone: string | null
@@ -33,14 +34,15 @@ export type Database = {
           secondary_color: string | null
           updated_at: string
           xml_import_url: string | null
+          youtube_url: string | null
         }
         Insert: {
           address?: string | null
-          agent_name?: string | null
           agents?: Json | null
           created_at?: string
           description_background_url?: string | null
           email?: string | null
+          facebook_url?: string | null
           google_maps_api_key?: string | null
           icon_bathrooms?: string | null
           icon_bedrooms?: string | null
@@ -50,6 +52,7 @@ export type Database = {
           icon_living_space?: string | null
           icon_sqft?: string | null
           id?: string
+          instagram_url?: string | null
           logo_url?: string | null
           name: string
           phone?: string | null
@@ -57,14 +60,15 @@ export type Database = {
           secondary_color?: string | null
           updated_at?: string
           xml_import_url?: string | null
+          youtube_url?: string | null
         }
         Update: {
           address?: string | null
-          agent_name?: string | null
           agents?: Json | null
           created_at?: string
           description_background_url?: string | null
           email?: string | null
+          facebook_url?: string | null
           google_maps_api_key?: string | null
           icon_bathrooms?: string | null
           icon_bedrooms?: string | null
@@ -74,6 +78,7 @@ export type Database = {
           icon_living_space?: string | null
           icon_sqft?: string | null
           id?: string
+          instagram_url?: string | null
           logo_url?: string | null
           name?: string
           phone?: string | null
@@ -81,6 +86,7 @@ export type Database = {
           secondary_color?: string | null
           updated_at?: string
           xml_import_url?: string | null
+          youtube_url?: string | null
         }
         Relationships: []
       }
