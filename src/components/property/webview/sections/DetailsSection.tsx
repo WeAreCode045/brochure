@@ -16,9 +16,17 @@ export function DetailsSection({ property, settings }: WebViewSectionProps) {
         settings={settings}
       />
       
-      <div className="p-6">
-        <h3 className="text-xl font-semibold mb-4">Description</h3>
-        <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap">{property.description}</p>
+      <div className="p-6" 
+        style={{
+          backgroundImage: settings?.descriptionBackgroundUrl ? `url(${settings.descriptionBackgroundUrl})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundColor: settings?.descriptionBackgroundUrl ? 'rgba(255, 255, 255, 0.9)' : 'transparent'
+        }}>
+        <div className={`${settings?.descriptionBackgroundUrl ? 'bg-white/90 p-6 rounded-lg' : ''}`}>
+          <h3 className="text-xl font-semibold mb-4">Description</h3>
+          <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap">{property.description}</p>
+        </div>
       </div>
 
       {property.features && property.features.length > 0 && (

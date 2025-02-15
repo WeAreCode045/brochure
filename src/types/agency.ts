@@ -16,6 +16,7 @@ export interface AgencySettings {
   primaryColor: string;
   secondaryColor: string;
   logoUrl?: string;
+  descriptionBackgroundUrl?: string;
   iconBuildYear?: string;
   iconBedrooms?: string;
   iconBathrooms?: string;
