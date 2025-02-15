@@ -56,11 +56,11 @@ export function NeighborhoodSection({ property, settings }: WebViewSectionProps)
 
         if (data) {
           setPlacesData({
-            education: data.education || [],
-            shopping: data.shopping || [],
-            train: data.train || [],
-            bus: data.bus || [],
-            sports: data.sports || [],
+            education: (data.education || []).filter(place => place.rating && place.rating >= 4),
+            shopping: (data.shopping || []).filter(place => place.rating && place.rating >= 4),
+            train: (data.train || []).filter(place => place.rating && place.rating >= 4),
+            bus: (data.bus || []).filter(place => place.rating && place.rating >= 4),
+            sports: (data.sports || []).filter(place => place.rating && place.rating >= 4),
             areaPhotos: data.areaPhotos || []
           });
         }
@@ -97,14 +97,14 @@ export function NeighborhoodSection({ property, settings }: WebViewSectionProps)
   };
 
   return (
-    <div className="space-y-6 px-6 pb-24">
+    <div className="space-y-6 pb-24">
       {placesData.areaPhotos && placesData.areaPhotos.length > 0 && (
-        <div className="mb-8">
+        <div className="mb-8 w-full">
           <WebViewImageGrid images={placesData.areaPhotos} settings={settings} />
         </div>
       )}
       
-      <div className="relative">
+      <div className="relative px-6">
         <h3 
           className="text-xl font-semibold mb-4"
           style={{ color: settings?.secondaryColor }}
@@ -126,7 +126,7 @@ export function NeighborhoodSection({ property, settings }: WebViewSectionProps)
         </div>
       </div>
       
-      <div className="w-full h-[300px] rounded-lg overflow-hidden">
+      <div className="w-full h-[300px] rounded-lg overflow-hidden px-6">
         {settings?.googleMapsApiKey ? (
           <iframe
             width="100%"
