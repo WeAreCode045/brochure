@@ -37,27 +37,7 @@ export function usePropertyForm(id: string | undefined, onSubmit: (data: Propert
     try {
       const { data, error } = await supabase
         .from('properties')
-        .select(`
-          id,
-          title,
-          price,
-          address,
-          bedrooms,
-          bathrooms,
-          sqft,
-          "livingArea",
-          "buildYear",
-          garages,
-          "energyLabel",
-          "hasGarden",
-          description,
-          features,
-          images,
-          floorplans,
-          "featuredImage",
-          "gridImages",
-          areas
-        `)
+        .select('*')
         .eq('id', id)
         .single();
 
@@ -80,7 +60,12 @@ export function usePropertyForm(id: string | undefined, onSubmit: (data: Propert
           : [];
 
         const areas = Array.isArray(data.areas)
-          ? data.areas
+          ? data.areas.map((area: any) => ({
+              id: area.id || crypto.randomUUID(),
+              title: area.title || "",
+              description: area.description || "",
+              images: Array.isArray(area.images) ? area.images : []
+            }))
           : [];
 
         setFormData({

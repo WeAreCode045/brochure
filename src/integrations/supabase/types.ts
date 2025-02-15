@@ -102,6 +102,7 @@ export type Database = {
       properties: {
         Row: {
           address: string | null
+          areas: Json[] | null
           bathrooms: string | null
           bedrooms: string | null
           buildYear: string | null
@@ -127,6 +128,7 @@ export type Database = {
         }
         Insert: {
           address?: string | null
+          areas?: Json[] | null
           bathrooms?: string | null
           bedrooms?: string | null
           buildYear?: string | null
@@ -152,6 +154,7 @@ export type Database = {
         }
         Update: {
           address?: string | null
+          areas?: Json[] | null
           bathrooms?: string | null
           bedrooms?: string | null
           buildYear?: string | null

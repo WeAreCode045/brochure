@@ -6,9 +6,12 @@ import { PropertyDetails } from "./property/PropertyDetails";
 import { PropertyFeatures } from "./property/PropertyFeatures";
 import { PropertyDescription } from "./property/PropertyDescription";
 import { PropertyImages } from "./property/PropertyImages";
+import { PropertyAreas } from "./property/PropertyAreas";
 import { usePropertyImages } from "@/hooks/usePropertyImages";
 import { usePropertySubmit } from "@/hooks/usePropertySubmit";
-import type { PropertyFormData } from "@/types/property";
+import type { PropertyFormData, PropertyArea } from "@/types/property";
+import { useFileUpload } from "@/hooks/useFileUpload";
+import { useToast } from "@/components/ui/use-toast";
 
 export function AddPropertyForm() {
   const [formData, setFormData] = useState<PropertyFormData>({
@@ -29,9 +32,12 @@ export function AddPropertyForm() {
     floorplans: [],
     featuredImage: null,
     gridImages: [],
+    areas: [],
   });
 
+  const { toast } = useToast();
   const { handleSubmit } = usePropertySubmit();
+  const { uploadFile } = useFileUpload();
   const {
     handleImageUpload,
     handleFloorplanUpload,
@@ -44,6 +50,81 @@ export function AddPropertyForm() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleAreaImageUpload = async (areaId: string, files: FileList) => {
+    try {
+      const uploadPromises = Array.from(files).map(async (file) => {
+        const url = await uploadFile(file);
+        return url;
+      });
+
+      const uploadedUrls = await Promise.all(uploadPromises);
+
+      setFormData(prev => ({
+        ...prev,
+        areas: prev.areas.map(area => 
+          area.id === areaId 
+            ? { ...area, images: [...area.images, ...uploadedUrls] }
+            : area
+        )
+      }));
+
+      toast({
+        title: "Success",
+        description: "Area images uploaded successfully",
+        variant: "default",
+      });
+    } catch (error) {
+      console.error('Error uploading area images:', error);
+      toast({
+        title: "Error",
+        description: "Failed to upload area images",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const addArea = () => {
+    setFormData(prev => ({
+      ...prev,
+      areas: [
+        ...prev.areas,
+        {
+          id: crypto.randomUUID(),
+          title: '',
+          description: '',
+          images: []
+        }
+      ]
+    }));
+  };
+
+  const removeArea = (id: string) => {
+    setFormData(prev => ({
+      ...prev,
+      areas: prev.areas.filter(area => area.id !== id)
+    }));
+  };
+
+  const updateArea = (id: string, field: keyof PropertyArea, value: string | string[]) => {
+    setFormData(prev => ({
+      ...prev,
+      areas: prev.areas.map(area => 
+        area.id === id ? { ...area, [field]: value } : area
+      )
+    }));
+  };
+
+  const removeAreaImage = (areaId: string, imageUrl: string) => {
+    setFormData(prev => ({
+      ...prev,
+      areas: prev.areas.map(area => 
+        area.id === areaId
+          ? { ...area, images: area.images.filter(url => url !== imageUrl) }
+          : area
+      )
+    }));
   };
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -80,6 +161,15 @@ export function AddPropertyForm() {
               f.id === id ? { ...f, description } : f
             )
           }))}
+        />
+
+        <PropertyAreas
+          areas={formData.areas}
+          onAdd={addArea}
+          onRemove={removeArea}
+          onUpdate={updateArea}
+          onImageUpload={handleAreaImageUpload}
+          onImageRemove={removeAreaImage}
         />
 
         <PropertyImages
