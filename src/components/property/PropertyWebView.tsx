@@ -21,31 +21,34 @@ export function PropertyWebView({ property, open, onOpenChange }: WebViewDialogP
     handlePrint
   } = usePropertyWebView();
 
+  // Force re-render when page changes
+  const key = `page-${currentPage}`;
+
   const sections = [
     {
       id: 'overview',
       title: 'Overview',
-      content: <OverviewSection property={property} settings={settings} />
+      content: <OverviewSection key={key} property={property} settings={settings} />
     },
     {
       id: 'details',
       title: 'Details',
-      content: <DetailsSection property={property} settings={settings} />
+      content: <DetailsSection key={key} property={property} settings={settings} />
     },
     {
       id: 'photos',
       title: 'Photos',
-      content: <PhotosSection property={property} settings={settings} />
+      content: <PhotosSection key={key} property={property} settings={settings} />
     },
     {
       id: 'floorplans',
       title: 'Floorplans',
-      content: <FloorplansSection property={property} settings={settings} />
+      content: <FloorplansSection key={key} property={property} settings={settings} />
     },
     {
       id: 'contact',
       title: 'Contact',
-      content: <ContactSection property={property} settings={settings} />
+      content: <ContactSection key={key} property={property} settings={settings} />
     }
   ];
 
