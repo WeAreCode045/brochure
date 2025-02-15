@@ -75,17 +75,17 @@ export function NeighborhoodSection({ property, settings }: WebViewSectionProps)
           className="text-xl font-semibold mb-4"
           style={{ color: settings?.secondaryColor }}
         >
-          Location
+          Locatie
         </h3>
         <div className="text-gray-600 text-[13px] leading-relaxed mb-6">
           {loading && settings?.googleMapsApiKey ? (
-            <div className="text-center py-4">Loading neighborhood information...</div>
+            <div className="text-center py-4">Locatie informatie laden...</div>
           ) : (
             <div className="mt-4 grid grid-cols-2 gap-6">
-              {renderPlacesList(nearbyPlaces.restaurants, "Nearby Restaurants")}
-              {renderPlacesList(nearbyPlaces.schools, "Educational Facilities")}
-              {renderPlacesList(nearbyPlaces.transit, "Transportation")}
-              {renderPlacesList(nearbyPlaces.shopping, "Shopping")}
+              {renderPlacesList(nearbyPlaces.restaurants, "Restaurants in de buurt")}
+              {renderPlacesList(nearbyPlaces.schools, "Onderwijsinstellingen")}
+              {renderPlacesList(nearbyPlaces.transit, "Openbaar Vervoer")}
+              {renderPlacesList(nearbyPlaces.shopping, "Winkels")}
             </div>
           )}
         </div>
@@ -98,12 +98,12 @@ export function NeighborhoodSection({ property, settings }: WebViewSectionProps)
             height="100%"
             frameBorder="0"
             style={{ border: 0 }}
-            src={`https://www.google.com/maps/embed/v1/place?key=${settings.googleMapsApiKey}&q=${encodeURIComponent(property.address)}`}
+            src={`https://www.google.com/maps/embed/v1/place?key=${settings.googleMapsApiKey}&q=${encodeURIComponent(property.address)}&zoom=14`}
             allowFullScreen
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-500">
-            Please add a Google Maps API key in Settings &gt; Advanced to view the map
+            Voeg een Google Maps API-sleutel toe in Instellingen &gt; Geavanceerd om de kaart te bekijken
           </div>
         )}
       </div>
