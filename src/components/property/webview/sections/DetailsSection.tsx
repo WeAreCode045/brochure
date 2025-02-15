@@ -7,7 +7,7 @@ export function DetailsSection({ property, settings }: WebViewSectionProps) {
   console.log('Property details:', property);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-24">
       <WebViewHeader settings={settings} />
       
       <PropertyDetails 
