@@ -25,7 +25,7 @@ export function DetailsPage({ data }: DetailsPageProps) {
   };
 
   return (
-    <div className="space-y-8 p-6">
+    <div className="space-y-8">
       {/* Key Features */}
       <div className="grid grid-cols-4 gap-6">
         <div className="bg-estate-50 rounded-xl p-6 flex flex-col items-center">
@@ -82,10 +82,10 @@ export function DetailsPage({ data }: DetailsPageProps) {
           <p className="text-estate-600 leading-relaxed">{data.address}</p>
         </Card>
 
-        <Card className="p-6 bg-white shadow-sm">
+        <div className="bg-[#D3E4FD] rounded-lg p-6">
           <h3 className="text-xl font-semibold text-estate-700 mb-3">Beschrijving</h3>
-          <p className="text-estate-600 whitespace-pre-wrap leading-relaxed">{data.description}</p>
-        </Card>
+          <p className="text-sm text-estate-600 whitespace-pre-wrap leading-relaxed">{data.description}</p>
+        </div>
       </div>
     </div>
   );
