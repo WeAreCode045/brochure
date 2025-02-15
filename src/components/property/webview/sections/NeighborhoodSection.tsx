@@ -33,14 +33,20 @@ export function NeighborhoodSection({ property, settings }: WebViewSectionProps)
       </div>
       
       <div className="w-full h-[300px] rounded-lg overflow-hidden">
-        <iframe
-          width="100%"
-          height="100%"
-          frameBorder="0"
-          style={{ border: 0 }}
-          src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(property.address)}`}
-          allowFullScreen
-        />
+        {settings?.googleMapsApiKey ? (
+          <iframe
+            width="100%"
+            height="100%"
+            frameBorder="0"
+            style={{ border: 0 }}
+            src={`https://www.google.com/maps/embed/v1/place?key=${settings.googleMapsApiKey}&q=${encodeURIComponent(property.address)}`}
+            allowFullScreen
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-500">
+            Please add a Google Maps API key in Settings &gt; Advanced to view the map
+          </div>
+        )}
       </div>
     </div>
   );
