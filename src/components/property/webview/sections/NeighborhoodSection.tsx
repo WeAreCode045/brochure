@@ -1,6 +1,7 @@
 
 import { WebViewSectionProps } from "../types";
 import { useEffect, useState } from "react";
+import { supabase } from "@/utils/supabase";
 
 interface PlaceDetails {
   types: string[];
@@ -25,41 +26,19 @@ export function NeighborhoodSection({ property, settings }: WebViewSectionProps)
       if (!settings?.googleMapsApiKey || !property.address) return;
 
       try {
-        // First, geocode the address to get coordinates
-        const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(property.address)}&key=${settings.googleMapsApiKey}`;
-        const geocodeResponse = await fetch(geocodeUrl);
-        const geocodeData = await geocodeResponse.json();
-
-        if (geocodeData.results?.[0]?.geometry?.location) {
-          const { lat, lng } = geocodeData.results[0].geometry.location;
-
-          // Types of places to search for
-          const placeTypes = {
-            restaurants: 'restaurant',
-            schools: 'school',
-            transit: 'transit_station',
-            shopping: 'shopping_mall'
-          };
-
-          const placesData: { [key: string]: PlaceDetails[] } = {};
-
-          // Fetch places for each type
-          for (const [key, type] of Object.entries(placeTypes)) {
-            const nearbyUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=1500&type=${type}&key=${settings.googleMapsApiKey}`;
-            const response = await fetch(nearbyUrl);
-            const data = await response.json();
-            
-            if (data.results) {
-              placesData[key] = data.results.slice(0, 3).map((place: any) => ({
-                types: place.types,
-                vicinity: place.vicinity,
-                name: place.name,
-                rating: place.rating
-              }));
-            }
+        const { data, error } = await supabase.functions.invoke('nearby-places', {
+          body: {
+            address: property.address,
+            apiKey: settings.googleMapsApiKey
           }
+        });
 
-          setNearbyPlaces(placesData);
+        if (error) {
+          throw error;
+        }
+
+        if (data) {
+          setNearbyPlaces(data);
         }
       } catch (error) {
         console.error('Error fetching nearby places:', error);
