@@ -3,7 +3,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { PropertyWebView } from "./PropertyWebView";
 import { getOrCreateWebViewUrl } from "@/utils/webViewUtils";
 import { PropertyQROverlay } from "./PropertyQROverlay";
 import { ArrowUpRight, Pencil, Trash } from "lucide-react";
@@ -18,7 +17,6 @@ export const PropertyCard = ({
   onDelete,
 }: PropertyCardProps) => {
   const navigate = useNavigate();
-  const [webViewOpen, setWebViewOpen] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const [webViewUrl, setWebViewUrl] = useState<string | null>(null);
 
@@ -63,7 +61,7 @@ export const PropertyCard = ({
           <Button 
             variant="outline" 
             size="icon"
-            onClick={() => setWebViewOpen(true)}
+            onClick={() => navigate(`/property/${property.id}/webview`)}
             title="Open Preview"
           >
             <ArrowUpRight className="h-4 w-4" />
@@ -86,12 +84,6 @@ export const PropertyCard = ({
           </Button>
         </div>
       </Card>
-
-      <PropertyWebView
-        property={property}
-        open={webViewOpen}
-        onOpenChange={setWebViewOpen}
-      />
     </>
   );
 };
