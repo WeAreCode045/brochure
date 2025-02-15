@@ -3,9 +3,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import type { PropertyArea, PropertyFormData } from "@/types/property";
 
+type SetFormDataFunction = (data: PropertyFormData | ((prev: PropertyFormData) => PropertyFormData)) => void;
+
 export function usePropertyAreas(
   formData: PropertyFormData,
-  setFormData: (data: PropertyFormData) => void
+  setFormData: SetFormDataFunction
 ) {
   const { toast } = useToast();
   const { uploadFile } = useFileUpload();
@@ -19,7 +21,7 @@ export function usePropertyAreas(
 
       const uploadedUrls = await Promise.all(uploadPromises);
 
-      setFormData(prev => ({
+      setFormData((prev: PropertyFormData) => ({
         ...prev,
         areas: prev.areas.map(area => 
           area.id === areaId 
@@ -44,7 +46,7 @@ export function usePropertyAreas(
   };
 
   const addArea = () => {
-    setFormData(prev => ({
+    setFormData((prev: PropertyFormData) => ({
       ...prev,
       areas: [
         ...prev.areas,
@@ -59,14 +61,14 @@ export function usePropertyAreas(
   };
 
   const removeArea = (id: string) => {
-    setFormData(prev => ({
+    setFormData((prev: PropertyFormData) => ({
       ...prev,
       areas: prev.areas.filter(area => area.id !== id)
     }));
   };
 
   const updateArea = (id: string, field: keyof PropertyArea, value: string | string[]) => {
-    setFormData(prev => ({
+    setFormData((prev: PropertyFormData) => ({
       ...prev,
       areas: prev.areas.map(area => 
         area.id === id ? { ...area, [field]: value } : area
@@ -75,7 +77,7 @@ export function usePropertyAreas(
   };
 
   const removeAreaImage = (areaId: string, imageUrl: string) => {
-    setFormData(prev => ({
+    setFormData((prev: PropertyFormData) => ({
       ...prev,
       areas: prev.areas.map(area => 
         area.id === areaId

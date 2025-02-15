@@ -4,6 +4,7 @@ import { EditPropertyForm } from "@/components/EditPropertyForm";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import type { PropertySubmitData } from "@/types/property";
+import { Json } from "@/integrations/supabase/types";
 
 export default function EditPropertyPage() {
   const navigate = useNavigate();
@@ -24,12 +25,13 @@ export default function EditPropertyPage() {
         garages: data.garages,
         energyLabel: data.energyLabel,
         description: data.description,
-        features: data.features,
+        features: data.features as Json,
         images: data.images,
         floorplans: data.floorplans,
         featuredImage: data.featuredImage,
         gridImages: data.gridImages,
-        hasGarden: data.hasGarden, // Updated to match new column name
+        hasGarden: data.hasGarden,
+        areas: data.areas as Json[],
       };
 
       if (id) {
