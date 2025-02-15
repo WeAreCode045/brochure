@@ -96,7 +96,7 @@ function PropertyWebViewContent({
   setCurrentPage: (page: number) => void;
   selectedImage: string | null;
   setSelectedImage: (image: string | null) => void;
-  handleShare: () => void;
+  handleShare: (platform: string) => Promise<void>;
   handlePrint: () => void;
 }) {
   // Force re-render when page changes
@@ -148,7 +148,7 @@ function PropertyWebViewContent({
           totalPages={filteredSections.length}
           onPrevious={() => setCurrentPage(currentPage - 1)}
           onNext={() => setCurrentPage(currentPage + 1)}
-          onShare={handleShare}
+          onShare={(platform) => handleShare(platform)}
           onPrint={handlePrint}
         />
       </div>
