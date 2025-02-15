@@ -8,7 +8,7 @@ interface LocationData {
 }
 
 serve(async (req) => {
-  // Handle CORS
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
@@ -16,10 +16,18 @@ serve(async (req) => {
   try {
     const { address, apiKey } = await req.json()
 
+    if (!address || !apiKey) {
+      throw new Error('Missing required parameters: address or apiKey')
+    }
+
+    console.log('Fetching data for address:', address) // Add logging
+
     // First, geocode the address
     const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`
     const geocodeResponse = await fetch(geocodeUrl)
     const geocodeData = await geocodeResponse.json()
+
+    console.log('Geocode response:', geocodeData) // Add logging
 
     if (!geocodeData.results?.[0]?.geometry?.location) {
       throw new Error('Could not geocode address')
@@ -39,6 +47,7 @@ serve(async (req) => {
 
     // Fetch places for each type
     for (const [key, type] of Object.entries(placeTypes)) {
+      console.log(`Fetching ${key} data...`) // Add logging
       const nearbyUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=1500&type=${type}&key=${apiKey}`
       const response = await fetch(nearbyUrl)
       const data = await response.json()
@@ -53,6 +62,8 @@ serve(async (req) => {
       }
     }
 
+    console.log('Successfully fetched all places data') // Add logging
+
     return new Response(
       JSON.stringify(placesData),
       { 
@@ -63,6 +74,7 @@ serve(async (req) => {
       }
     )
   } catch (error) {
+    console.error('Error in nearby-places function:', error) // Add logging
     return new Response(
       JSON.stringify({ error: error.message }), 
       { 
