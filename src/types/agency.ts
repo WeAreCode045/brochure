@@ -1,9 +1,9 @@
 
-export interface Typography {
-  color: string;
-  size: string;
-  weight: string;
-  font: string;
+export interface Agent {
+  name: string;
+  phone: string;
+  email: string;
+  whatsapp: string;
 }
 
 export interface AgencySettings {
@@ -26,11 +26,5 @@ export interface AgencySettings {
   iconLivingSpace?: string;
   googleMapsApiKey?: string;
   xmlImportUrl?: string;
-  typography_h1?: Typography;
-  typography_h2?: Typography;
-  typography_p?: Typography;
-  typography_title?: Typography;
-  typography_price?: Typography;
-  typography_label?: Typography;
-  typography_list?: Typography;
+  agents: Agent[];
 }

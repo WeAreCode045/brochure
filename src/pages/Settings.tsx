@@ -16,7 +16,7 @@ const Settings = () => {
     handleSubmit,
     handleChange,
     handleSelectChange,
-    handleTypographyChange,
+    handleAgentChange,
     handleLogoUpload,
     handleDescriptionBackgroundUpload,
   } = useAgencySettings();
@@ -52,6 +52,7 @@ const Settings = () => {
             logoPreview={logoPreview}
             onChange={handleChange}
             onLogoUpload={handleLogoUpload}
+            onAgentChange={handleAgentChange}
           />
         )}
         
@@ -60,7 +61,6 @@ const Settings = () => {
             settings={settings}
             onChange={handleChange}
             onSelectChange={handleSelectChange}
-            onTypographyChange={handleTypographyChange}
             onDescriptionBackgroundUpload={handleDescriptionBackgroundUpload}
           />
         )}
@@ -78,6 +78,6 @@ const Settings = () => {
       </form>
     </div>
   );
-};
+}
 
 export default Settings;

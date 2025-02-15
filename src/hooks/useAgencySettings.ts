@@ -1,19 +1,12 @@
 
 import { useState, useEffect } from "react";
-import { AgencySettings, Typography } from "@/types/agency";
+import { AgencySettings, Agent } from "@/types/agency";
 import { useToast } from "@/components/ui/use-toast";
 import { fetchAgencySettings } from "@/utils/fetchAgencySettings";
 import { defaultAgencySettings } from "@/utils/defaultAgencySettings";
 import { agencySettingsService } from "@/services/agencySettingsService";
 import { useLogoUpload } from "./useLogoUpload";
 import { Json } from "@/integrations/supabase/types";
-
-const typographyToJson = (typography: Typography): Json => ({
-  color: typography.color,
-  size: typography.size,
-  weight: typography.weight,
-  font: typography.font
-});
 
 export const useAgencySettings = () => {
   const { toast } = useToast();
@@ -61,13 +54,7 @@ export const useAgencySettings = () => {
           icon_living_space: settings.iconLivingSpace,
           google_maps_api_key: settings.googleMapsApiKey,
           xml_import_url: settings.xmlImportUrl,
-          typography_h1: typographyToJson(settings.typography_h1),
-          typography_h2: typographyToJson(settings.typography_h2),
-          typography_p: typographyToJson(settings.typography_p),
-          typography_title: typographyToJson(settings.typography_title),
-          typography_price: typographyToJson(settings.typography_price),
-          typography_label: typographyToJson(settings.typography_label),
-          typography_list: typographyToJson(settings.typography_list)
+          agents: settings.agents
         };
         await agencySettingsService.createSettings(createData);
       }
@@ -108,13 +95,10 @@ export const useAgencySettings = () => {
     }));
   };
 
-  const handleTypographyChange = (element: string, field: keyof Typography, value: string) => {
+  const handleAgentChange = (agents: Agent[]) => {
     setSettings((prev) => ({
       ...prev,
-      [element]: {
-        ...prev[element],
-        [field]: value,
-      },
+      agents,
     }));
   };
 
@@ -132,7 +116,6 @@ export const useAgencySettings = () => {
           descriptionBackgroundUrl: url
         });
 
-        // Refresh settings after update
         const newSettings = await fetchAgencySettings();
         if (newSettings) {
           setSettings(newSettings);
@@ -178,7 +161,7 @@ export const useAgencySettings = () => {
     handleSubmit,
     handleChange,
     handleSelectChange,
-    handleTypographyChange,
+    handleAgentChange,
     handleLogoUpload,
     handleDescriptionBackgroundUpload,
   };

@@ -13,6 +13,7 @@ export type Database = {
         Row: {
           address: string | null
           agent_name: string | null
+          agents: Json | null
           created_at: string
           description_background_url: string | null
           email: string | null
@@ -30,19 +31,13 @@ export type Database = {
           phone: string | null
           primary_color: string | null
           secondary_color: string | null
-          typography_h1: Json | null
-          typography_h2: Json | null
-          typography_label: Json | null
-          typography_list: Json | null
-          typography_p: Json | null
-          typography_price: Json | null
-          typography_title: Json | null
           updated_at: string
           xml_import_url: string | null
         }
         Insert: {
           address?: string | null
           agent_name?: string | null
+          agents?: Json | null
           created_at?: string
           description_background_url?: string | null
           email?: string | null
@@ -60,19 +55,13 @@ export type Database = {
           phone?: string | null
           primary_color?: string | null
           secondary_color?: string | null
-          typography_h1?: Json | null
-          typography_h2?: Json | null
-          typography_label?: Json | null
-          typography_list?: Json | null
-          typography_p?: Json | null
-          typography_price?: Json | null
-          typography_title?: Json | null
           updated_at?: string
           xml_import_url?: string | null
         }
         Update: {
           address?: string | null
           agent_name?: string | null
+          agents?: Json | null
           created_at?: string
           description_background_url?: string | null
           email?: string | null
@@ -90,13 +79,6 @@ export type Database = {
           phone?: string | null
           primary_color?: string | null
           secondary_color?: string | null
-          typography_h1?: Json | null
-          typography_h2?: Json | null
-          typography_label?: Json | null
-          typography_list?: Json | null
-          typography_p?: Json | null
-          typography_price?: Json | null
-          typography_title?: Json | null
           updated_at?: string
           xml_import_url?: string | null
         }

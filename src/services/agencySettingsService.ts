@@ -1,7 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
-import { AgencySettings, Typography } from "@/types/agency";
-import { Json } from "@/integrations/supabase/types";
+import { AgencySettings } from "@/types/agency";
 
 interface AgencySettingsData {
   name: string;
@@ -22,13 +21,7 @@ interface AgencySettingsData {
   icon_living_space: string;
   google_maps_api_key: string;
   xml_import_url: string;
-  typography_h1: Json;
-  typography_h2: Json;
-  typography_p: Json;
-  typography_title: Json;
-  typography_price: Json;
-  typography_label: Json;
-  typography_list: Json;
+  agents: any[];
 }
 
 export const agencySettingsService = {
@@ -61,13 +54,6 @@ export const agencySettingsService = {
   },
 
   async updateSettings(id: string, data: AgencySettings) {
-    const typographyToJson = (typography: Typography): Json => ({
-      color: typography.color,
-      size: typography.size,
-      weight: typography.weight,
-      font: typography.font
-    });
-
     const updateData: AgencySettingsData = {
       name: data.name,
       agent_name: data.agentName,
@@ -87,13 +73,7 @@ export const agencySettingsService = {
       icon_living_space: data.iconLivingSpace,
       google_maps_api_key: data.googleMapsApiKey,
       xml_import_url: data.xmlImportUrl,
-      typography_h1: typographyToJson(data.typography_h1),
-      typography_h2: typographyToJson(data.typography_h2),
-      typography_p: typographyToJson(data.typography_p),
-      typography_title: typographyToJson(data.typography_title),
-      typography_price: typographyToJson(data.typography_price),
-      typography_label: typographyToJson(data.typography_label),
-      typography_list: typographyToJson(data.typography_list)
+      agents: data.agents
     };
 
     const { error } = await supabase
