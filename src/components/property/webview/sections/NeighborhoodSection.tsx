@@ -22,20 +22,25 @@ interface PlacesData {
   areaPhotos: string[];
 }
 
+const initialPlacesData: PlacesData = {
+  education: [],
+  shopping: [],
+  train: [],
+  bus: [],
+  sports: [],
+  areaPhotos: []
+};
+
 export function NeighborhoodSection({ property, settings }: WebViewSectionProps) {
-  const [placesData, setPlacesData] = useState<PlacesData>({
-    education: [],
-    shopping: [],
-    train: [],
-    bus: [],
-    sports: [],
-    areaPhotos: []
-  });
+  const [placesData, setPlacesData] = useState<PlacesData>(initialPlacesData);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchNearbyPlaces = async () => {
-      if (!settings?.googleMapsApiKey || !property.address) return;
+      if (!settings?.googleMapsApiKey || !property.address) {
+        setLoading(false);
+        return;
+      }
 
       try {
         const { data, error } = await supabase.functions.invoke('nearby-places', {
@@ -50,10 +55,18 @@ export function NeighborhoodSection({ property, settings }: WebViewSectionProps)
         }
 
         if (data) {
-          setPlacesData(data);
+          setPlacesData({
+            education: data.education || [],
+            shopping: data.shopping || [],
+            train: data.train || [],
+            bus: data.bus || [],
+            sports: data.sports || [],
+            areaPhotos: data.areaPhotos || []
+          });
         }
       } catch (error) {
         console.error('Error fetching nearby places:', error);
+        setPlacesData(initialPlacesData);
       } finally {
         setLoading(false);
       }
@@ -63,7 +76,7 @@ export function NeighborhoodSection({ property, settings }: WebViewSectionProps)
   }, [property.address, settings?.googleMapsApiKey]);
 
   const renderPlacesList = (places: PlaceDetails[], title: string, Icon: React.ElementType) => {
-    if (places.length === 0) return null;
+    if (!places || places.length === 0) return null;
 
     return (
       <div>
@@ -85,7 +98,7 @@ export function NeighborhoodSection({ property, settings }: WebViewSectionProps)
 
   return (
     <div className="space-y-6 px-6 pb-24">
-      {placesData.areaPhotos.length > 0 && (
+      {placesData.areaPhotos && placesData.areaPhotos.length > 0 && (
         <div className="mb-8">
           <WebViewImageGrid images={placesData.areaPhotos} settings={settings} />
         </div>
