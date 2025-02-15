@@ -26,17 +26,15 @@ export function DetailsSection({ property, settings }: WebViewSectionProps) {
           <div 
             className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 rounded-lg text-sm"
             style={{ 
-              backgroundColor: `${settings?.secondaryColor}10`,
-              border: `1px solid ${settings?.secondaryColor}20`
+              backgroundColor: settings?.secondaryColor || '#0EA5E9',
             }}
           >
             {property.features.map((feature, index) => (
               <div key={feature.id || index} className="flex items-start gap-2">
                 <div 
-                  className="w-2 h-2 mt-1.5 rounded-full"
-                  style={{ backgroundColor: settings?.secondaryColor }}
+                  className="w-2 h-2 mt-1.5 rounded-full bg-white"
                 />
-                <span className="text-gray-700">{feature.description}</span>
+                <span className="text-white">{feature.description}</span>
               </div>
             ))}
           </div>
