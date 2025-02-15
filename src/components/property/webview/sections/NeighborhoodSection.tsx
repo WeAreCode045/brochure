@@ -19,7 +19,6 @@ interface PlacesData {
   train: PlaceDetails[];
   bus: PlaceDetails[];
   sports: PlaceDetails[];
-  areaPhotos: string[];
 }
 
 const initialPlacesData: PlacesData = {
@@ -28,7 +27,6 @@ const initialPlacesData: PlacesData = {
   train: [],
   bus: [],
   sports: [],
-  areaPhotos: []
 };
 
 export function NeighborhoodSection({ property, settings }: WebViewSectionProps) {
@@ -61,7 +59,6 @@ export function NeighborhoodSection({ property, settings }: WebViewSectionProps)
             train: (data.train || []).filter(place => place.rating && place.rating >= 4),
             bus: (data.bus || []).filter(place => place.rating && place.rating >= 4),
             sports: (data.sports || []).filter(place => place.rating && place.rating >= 4),
-            areaPhotos: data.areaPhotos || []
           });
         }
       } catch (error) {
@@ -98,9 +95,9 @@ export function NeighborhoodSection({ property, settings }: WebViewSectionProps)
 
   return (
     <div className="space-y-6 pb-24">
-      {placesData.areaPhotos && placesData.areaPhotos.length > 0 && (
+      {property.areaPhotos && property.areaPhotos.length > 0 && (
         <div className="mb-8 w-full">
-          <WebViewImageGrid images={placesData.areaPhotos} settings={settings} />
+          <WebViewImageGrid images={property.areaPhotos} settings={settings} />
         </div>
       )}
       
