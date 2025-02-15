@@ -8,6 +8,13 @@ import { agencySettingsService } from "@/services/agencySettingsService";
 import { useLogoUpload } from "./useLogoUpload";
 import { Json } from "@/integrations/supabase/types";
 
+const typographyToJson = (typography: Typography): Json => ({
+  color: typography.color,
+  size: typography.size,
+  weight: typography.weight,
+  font: typography.font
+});
+
 export const useAgencySettings = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
