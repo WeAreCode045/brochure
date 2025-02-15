@@ -7,7 +7,7 @@ export function DetailsSection({ property, settings }: WebViewSectionProps) {
   console.log('Property details:', property);
 
   return (
-    <div className="space-y-6 pb-24">
+    <div className="space-y-4 pb-24"> {/* Reduced from space-y-6 */}
       <WebViewHeader settings={settings} />
       
       <PropertyDetails 
@@ -16,7 +16,7 @@ export function DetailsSection({ property, settings }: WebViewSectionProps) {
         settings={settings}
       />
       
-      <div className="p-6 relative">
+      <div className="py-4 px-6 relative"> {/* Changed from p-6 to py-4 px-6 */}
         {settings?.descriptionBackgroundUrl && (
           <div 
             className="absolute inset-0 bg-cover bg-center"
@@ -33,7 +33,7 @@ export function DetailsSection({ property, settings }: WebViewSectionProps) {
           >
             Description
           </h3>
-          <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap">{property.description}</p>
+          <p className="text-gray-600 text-[13px] leading-relaxed whitespace-pre-wrap">{property.description}</p>
         </div>
       </div>
 
