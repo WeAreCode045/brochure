@@ -6,6 +6,7 @@ import { DetailsSection } from "./webview/sections/DetailsSection";
 import { PhotosSection } from "./webview/sections/PhotosSection";
 import { FloorplansSection } from "./webview/sections/FloorplansSection";
 import { ContactSection } from "./webview/sections/ContactSection";
+import { AreasSection } from "./webview/sections/AreasSection";
 import { usePropertyWebView } from "./webview/usePropertyWebView";
 import { useNavigate, useParams } from "react-router-dom";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
@@ -129,7 +130,6 @@ export function PropertyWebView({ property, open, onOpenChange }: PropertyWebVie
   );
 }
 
-// Internal component to avoid code duplication
 function PropertyWebViewContent({
   property,
   settings,
@@ -172,13 +172,27 @@ function PropertyWebViewContent({
       id: 'floorplans',
       title: 'Floorplans',
       content: <FloorplansSection key={key} property={property} settings={settings} />
-    },
-    {
-      id: 'contact',
-      title: 'Contact',
-      content: <ContactSection key={key} property={property} settings={settings} />
     }
   ];
+
+  // Add area sections
+  if (property.areas && property.areas.length > 0) {
+    const areaPages = Math.ceil(property.areas.length / 2);
+    for (let i = 0; i < areaPages; i++) {
+      sections.push({
+        id: `areas-${i}`,
+        title: `Areas ${i + 1}`,
+        content: <AreasSection key={`${key}-areas-${i}`} property={property} settings={settings} />
+      });
+    }
+  }
+
+  // Add contact section at the end
+  sections.push({
+    id: 'contact',
+    title: 'Contact',
+    content: <ContactSection key={key} property={property} settings={settings} />
+  });
 
   const filteredSections = sections.filter(section => {
     if (section.id === 'photos' && (!property.images || property.images.length === 0)) return false;
