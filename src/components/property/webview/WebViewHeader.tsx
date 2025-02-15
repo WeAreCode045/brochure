@@ -14,11 +14,11 @@ export function WebViewHeader({ settings }: WebViewHeaderProps) {
           <img
             src={settings.logoUrl}
             alt="Agency Logo"
-            className="w-[150px] h-auto object-contain" // Reduced from 200px to 150px
+            className="w-[120px] h-auto object-contain" // Reduced from 150px to 120px
           />
         )}
       </div>
-      <div className="flex items-center gap-4 text-sm">
+      <div className="flex items-center gap-4 text-[10px]"> {/* Changed from text-sm to text-[10px] */}
         {settings?.address && (
           <div className="flex items-center gap-1">
             <div 
