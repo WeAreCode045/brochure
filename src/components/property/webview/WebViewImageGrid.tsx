@@ -14,7 +14,7 @@ export function WebViewImageGrid({ images, settings }: WebViewImageGridProps) {
   const overlayStyle = { backgroundColor: `${overlayColor}80` }; // 80 adds 50% opacity
 
   return (
-    <div className="grid grid-cols-4 gap-4 px-6">
+    <div className="grid grid-cols-3 gap-4 px-6">
       {images.slice(0, 4).map((image, index) => (
         <div key={index} className="relative shadow-lg rounded-lg">
           <img
