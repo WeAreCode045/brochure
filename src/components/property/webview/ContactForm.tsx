@@ -47,7 +47,7 @@ export function ContactForm({
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid gap-6 md:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="name" className="text-sm font-medium text-gray-700">
+          <Label htmlFor="name" className="text-sm font-medium text-white/90">
             Name
           </Label>
           <Input
@@ -55,12 +55,12 @@ export function ContactForm({
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="border-gray-200 focus:ring-2 focus:ring-offset-1 focus:ring-opacity-50"
+            className="text-sm bg-white/10 border-white/20 text-white placeholder:text-white/60"
             required
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+          <Label htmlFor="email" className="text-sm font-medium text-white/90">
             Email
           </Label>
           <Input
@@ -69,13 +69,13 @@ export function ContactForm({
             type="email"
             value={formData.email}
             onChange={handleChange}
-            className="border-gray-200 focus:ring-2 focus:ring-offset-1 focus:ring-opacity-50"
+            className="text-sm bg-white/10 border-white/20 text-white placeholder:text-white/60"
             required
           />
         </div>
       </div>
       <div className="space-y-2">
-        <Label htmlFor="phone" className="text-sm font-medium text-gray-700">
+        <Label htmlFor="phone" className="text-sm font-medium text-white/90">
           Phone Number
         </Label>
         <Input
@@ -84,12 +84,12 @@ export function ContactForm({
           type="tel"
           value={formData.phone}
           onChange={handleChange}
-          className="border-gray-200 focus:ring-2 focus:ring-offset-1 focus:ring-opacity-50"
+          className="text-sm bg-white/10 border-white/20 text-white placeholder:text-white/60"
           required
         />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="message" className="text-sm font-medium text-gray-700">
+        <Label htmlFor="message" className="text-sm font-medium text-white/90">
           Message
         </Label>
         <Textarea
@@ -98,14 +98,13 @@ export function ContactForm({
           value={formData.message}
           onChange={handleChange}
           placeholder="I'm interested in this property..."
-          className="min-h-[120px] border-gray-200 focus:ring-2 focus:ring-offset-1 focus:ring-opacity-50"
+          className="text-sm min-h-[120px] bg-white/10 border-white/20 text-white placeholder:text-white/60"
           required
         />
       </div>
       <Button 
         type="submit"
-        className="w-full h-12 text-base font-medium shadow-lg hover:opacity-90 transition-opacity"
-        style={{ backgroundColor: secondaryColor }}
+        className="w-full h-12 text-sm font-medium bg-white text-gray-900 hover:bg-white/90 transition-colors"
       >
         Send Message
       </Button>
