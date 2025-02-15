@@ -4,28 +4,31 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import type { PropertyFormData, PropertySubmitData } from "@/types/property";
 
+const initialFormData: PropertyFormData = {
+  title: "",
+  price: "",
+  address: "",
+  bedrooms: "",
+  bathrooms: "",
+  sqft: "",
+  livingArea: "",
+  buildYear: "",
+  garages: "",
+  energyLabel: "",
+  hasGarden: false,
+  description: "",
+  features: [],
+  images: [],
+  floorplans: [],
+  featuredImage: null,
+  gridImages: [],
+  areas: [],
+};
+
 export function usePropertyForm(id: string | undefined, onSubmit: (data: PropertySubmitData) => void) {
   const { toast } = useToast();
-  const [formData, setFormData] = useState<PropertyFormData>({
-    title: "",
-    price: "",
-    address: "",
-    bedrooms: "",
-    bathrooms: "",
-    sqft: "",
-    livingArea: "",
-    buildYear: "",
-    garages: "",
-    energyLabel: "",
-    hasGarden: false,
-    description: "",
-    features: [],
-    images: [],
-    floorplans: [],
-    featuredImage: null,
-    gridImages: [],
-    areas: [],
-  });
+  const [formData, setFormData] = useState<PropertyFormData>(initialFormData);
+  const [isLoading, setIsLoading] = useState(id ? true : false);
 
   useEffect(() => {
     if (id) {
@@ -89,6 +92,7 @@ export function usePropertyForm(id: string | undefined, onSubmit: (data: Propert
           areas: areas,
         });
       }
+      setIsLoading(false);
     } catch (error) {
       console.error('Error:', error);
       toast({
@@ -96,11 +100,13 @@ export function usePropertyForm(id: string | undefined, onSubmit: (data: Propert
         description: "Failed to load property data",
         variant: "destructive",
       });
+      setIsLoading(false);
     }
   };
 
   return {
     formData,
     setFormData,
+    isLoading
   };
 }

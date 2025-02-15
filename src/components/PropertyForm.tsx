@@ -1,4 +1,5 @@
 
+import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PropertyDetails } from "./property/PropertyDetails";
@@ -45,6 +46,11 @@ export function PropertyForm({ onSubmit }: PropertyFormProps) {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  // Early return while data is loading
+  if (!formData) {
+    return null;
+  }
 
   return (
     <Card className="w-full max-w-2xl p-6 space-y-6 animate-fadeIn">
