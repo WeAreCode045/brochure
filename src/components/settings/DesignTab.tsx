@@ -1,9 +1,7 @@
 
 import { AgencySettings } from "@/types/agency";
 import { ElementsSettings } from "./ElementsSettings";
-import { TypographySettings } from "./TypographySettings";
 import { IconSettings } from "./IconSettings";
-import { LogoUpload } from "./LogoUpload";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
@@ -11,7 +9,6 @@ interface DesignTabProps {
   settings: AgencySettings;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSelectChange: (name: string, value: string) => void;
-  onTypographyChange: (element: string, field: string, value: string) => void;
   onDescriptionBackgroundUpload?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -19,7 +16,6 @@ export function DesignTab({
   settings, 
   onChange, 
   onSelectChange, 
-  onTypographyChange,
   onDescriptionBackgroundUpload 
 }: DesignTabProps) {
   return (
@@ -51,11 +47,6 @@ export function DesignTab({
         </div>
       </div>
 
-      <TypographySettings
-        settings={settings}
-        onChange={onChange}
-        onTypographyChange={onTypographyChange}
-      />
       <IconSettings
         settings={settings}
         onSelectChange={onSelectChange}

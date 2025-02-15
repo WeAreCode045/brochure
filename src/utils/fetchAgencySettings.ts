@@ -1,6 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
-import { AgencySettings } from "@/types/agency";
+import { AgencySettings, Agent } from "@/types/agency";
 import { defaultAgencySettings } from "./defaultAgencySettings";
 
 export async function fetchAgencySettings(): Promise<AgencySettings | null> {
@@ -16,6 +16,9 @@ export async function fetchAgencySettings(): Promise<AgencySettings | null> {
 
   if (!data) return null;
 
+  // Ensure agents is an array and has the correct shape
+  const agents: Agent[] = Array.isArray(data.agents) ? data.agents : [];
+
   return {
     id: String(data.id),
     name: data.name || defaultAgencySettings.name,
@@ -26,7 +29,7 @@ export async function fetchAgencySettings(): Promise<AgencySettings | null> {
     primaryColor: data.primary_color || defaultAgencySettings.primaryColor,
     secondaryColor: data.secondary_color || defaultAgencySettings.secondaryColor,
     logoUrl: data.logo_url,
-    agents: data.agents || [],
+    agents: agents,
     iconBuildYear: data.icon_build_year || defaultAgencySettings.iconBuildYear,
     iconBedrooms: data.icon_bedrooms || defaultAgencySettings.iconBedrooms,
     iconBathrooms: data.icon_bathrooms || defaultAgencySettings.iconBathrooms,
