@@ -37,17 +37,17 @@ export function PropertyWebViewContent({
     {
       id: 'overview',
       title: 'Overview',
-      content: (
-        <div className="space-y-4">
-          <WebViewHeader settings={settings} />
-          <OverviewSection key={key} property={property} settings={settings} />
-        </div>
-      )
+      content: <OverviewSection key={key} property={property} settings={settings} />
     },
     {
       id: 'details',
       title: 'Details',
-      content: <DetailsSection key={key} property={property} settings={settings} />
+      content: (
+        <div className="space-y-4">
+          <WebViewHeader settings={settings} />
+          <DetailsSection key={key} property={property} settings={settings} />
+        </div>
+      )
     },
     {
       id: 'floorplans',
