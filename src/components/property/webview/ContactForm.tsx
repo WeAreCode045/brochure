@@ -56,9 +56,6 @@ export function ContactForm({
             value={formData.name}
             onChange={handleChange}
             className="border-gray-200 focus:ring-2 focus:ring-offset-1 focus:ring-opacity-50"
-            style={{ 
-              focusRing: secondaryColor,
-            }}
             required
           />
         </div>
@@ -73,9 +70,6 @@ export function ContactForm({
             value={formData.email}
             onChange={handleChange}
             className="border-gray-200 focus:ring-2 focus:ring-offset-1 focus:ring-opacity-50"
-            style={{ 
-              focusRing: secondaryColor,
-            }}
             required
           />
         </div>
@@ -91,9 +85,6 @@ export function ContactForm({
           value={formData.phone}
           onChange={handleChange}
           className="border-gray-200 focus:ring-2 focus:ring-offset-1 focus:ring-opacity-50"
-          style={{ 
-            focusRing: secondaryColor,
-          }}
           required
         />
       </div>
@@ -108,9 +99,6 @@ export function ContactForm({
           onChange={handleChange}
           placeholder="I'm interested in this property..."
           className="min-h-[120px] border-gray-200 focus:ring-2 focus:ring-offset-1 focus:ring-opacity-50"
-          style={{ 
-            focusRing: secondaryColor,
-          }}
           required
         />
       </div>
