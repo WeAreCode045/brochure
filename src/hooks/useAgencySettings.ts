@@ -27,16 +27,9 @@ export const useAgencySettings = () => {
         logoUrl = await agencySettingsService.uploadLogo(file, filename);
       }
 
-      const typographyToJson = (typography: Typography): Json => ({
-        color: typography.color,
-        size: typography.size,
-        weight: typography.weight,
-        font: typography.font
-      });
-
-      const updateData: AgencySettings = {
+      const updateData = {
         ...settings,
-        logoUrl,
+        logoUrl
       };
 
       if (settings.id) {
@@ -126,23 +119,28 @@ export const useAgencySettings = () => {
       const filename = `description-bg-${Date.now()}.${file.name.split('.').pop()}`;
       const url = await agencySettingsService.uploadDescriptionBackground(file, filename);
       
-      setSettings(prev => ({
-        ...prev,
-        descriptionBackgroundUrl: url
-      }));
-
-      toast({
-        title: "Success",
-        description: "Background image uploaded successfully",
-      });
-
-      // Save the settings immediately after uploading
       if (settings.id) {
         await agencySettingsService.updateSettings(settings.id, {
           ...settings,
           descriptionBackgroundUrl: url
         });
+
+        // Refresh settings after update
+        const newSettings = await fetchAgencySettings();
+        if (newSettings) {
+          setSettings(newSettings);
+        }
+      } else {
+        setSettings(prev => ({
+          ...prev,
+          descriptionBackgroundUrl: url
+        }));
       }
+
+      toast({
+        title: "Success",
+        description: "Background image uploaded successfully",
+      });
     } catch (error) {
       console.error('Error uploading background image:', error);
       toast({
