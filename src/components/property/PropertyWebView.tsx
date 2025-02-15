@@ -11,8 +11,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useProperties } from "@/hooks/useProperties";
 import { PropertyData } from "@/types/property";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ChevronLeft } from "lucide-react";
+import { supabase } from "@/utils/supabase";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -32,10 +33,34 @@ export function PropertyWebView({ property, open, onOpenChange }: PropertyWebVie
   const { id } = useParams();
   const navigate = useNavigate();
   const { settings } = useAgencySettings();
-  const { properties } = useProperties();
+  const [propertyData, setPropertyData] = useState<PropertyData | null>(null);
   
-  // If property is not passed as prop, try to find it from the URL params
-  const resolvedProperty = property || properties?.find(p => p.id === id);
+  useEffect(() => {
+    const fetchProperty = async () => {
+      if (id) {
+        const { data, error } = await supabase
+          .from('properties')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (error) {
+          console.error('Error fetching property:', error);
+          return;
+        }
+
+        if (data) {
+          setPropertyData(data);
+        }
+      }
+    };
+
+    if (id) {
+      fetchProperty();
+    } else if (property) {
+      setPropertyData(property);
+    }
+  }, [id, property]);
   
   const {
     selectedImage,
@@ -46,8 +71,8 @@ export function PropertyWebView({ property, open, onOpenChange }: PropertyWebVie
     handlePrint
   } = usePropertyWebView();
 
-  if (!resolvedProperty) {
-    return <div>Property not found</div>;
+  if (!propertyData) {
+    return <div>Loading...</div>;
   }
 
   // If we're using it as a dialog
@@ -57,7 +82,7 @@ export function PropertyWebView({ property, open, onOpenChange }: PropertyWebVie
         <DialogContent className="max-w-[595px] h-[842px] p-0 overflow-hidden">
           <DialogTitle className="sr-only">Property View</DialogTitle>
           <PropertyWebViewContent 
-            property={resolvedProperty}
+            property={propertyData}
             settings={settings}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
@@ -85,13 +110,13 @@ export function PropertyWebView({ property, open, onOpenChange }: PropertyWebVie
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{resolvedProperty.title}</BreadcrumbPage>
+              <BreadcrumbPage>{propertyData.title}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </div>
       <PropertyWebViewContent 
-        property={resolvedProperty}
+        property={propertyData}
         settings={settings}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
