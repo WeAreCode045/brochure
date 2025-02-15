@@ -16,7 +16,7 @@ export function DetailsSection({ property, settings }: WebViewSectionProps) {
         settings={settings}
       />
       
-      <div className="py-4 px-6 relative"> {/* Changed from p-6 to py-4 px-6 */}
+      <div className="py-2 px-6 relative"> {/* Reduced from py-4 to py-2 */}
         {settings?.descriptionBackgroundUrl && (
           <div 
             className="absolute inset-0 bg-cover bg-center"
@@ -28,7 +28,7 @@ export function DetailsSection({ property, settings }: WebViewSectionProps) {
         )}
         <div className="relative">
           <h3 
-            className="text-xl font-semibold mb-4"
+            className="text-xl font-semibold mb-2" {/* Reduced from mb-4 to mb-2 */}
             style={{ color: settings?.secondaryColor }}
           >
             Description
@@ -38,9 +38,9 @@ export function DetailsSection({ property, settings }: WebViewSectionProps) {
       </div>
 
       {property.features && property.features.length > 0 && (
-        <div className="p-6 mb-6">
+        <div className="px-6 py-2 mb-4"> {/* Reduced padding and margin */}
           <h3 
-            className="text-xl font-semibold mb-4"
+            className="text-xl font-semibold mb-2" {/* Reduced from mb-4 to mb-2 */}
             style={{ color: settings?.secondaryColor }}
           >
             Features
