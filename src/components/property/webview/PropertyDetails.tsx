@@ -1,13 +1,15 @@
 
 import { CalendarDays, Ruler, Home, Bed, Bath, Car } from "lucide-react";
 import { PropertyData } from "@/types/property";
+import { AgencySettings } from "@/types/agency";
 
 interface PropertyDetailsProps {
   property: PropertyData;
   primaryColor?: string;
+  settings?: AgencySettings;
 }
 
-export function PropertyDetails({ property, primaryColor }: PropertyDetailsProps) {
+export function PropertyDetails({ property, primaryColor, settings }: PropertyDetailsProps) {
   const detailsConfig = [
     { icon: CalendarDays, label: "Build Year", value: property.buildYear },
     { icon: Home, label: "Living Area", value: `${property.livingArea} m²` },
