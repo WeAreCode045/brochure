@@ -33,6 +33,7 @@ export function AddPropertyForm() {
     featuredImage: null,
     gridImages: [],
     areas: [],
+    areaPhotos: [],
   });
 
   const { toast } = useToast();
@@ -40,8 +41,10 @@ export function AddPropertyForm() {
   const { uploadFile } = useFileUpload();
   const {
     handleImageUpload,
+    handleAreaPhotosUpload,
     handleFloorplanUpload,
     handleRemoveImage,
+    handleRemoveAreaPhoto,
     handleRemoveFloorplan,
     handleSetFeaturedImage,
     handleToggleGridImage
@@ -175,11 +178,14 @@ export function AddPropertyForm() {
         <PropertyImages
           images={formData.images}
           floorplans={formData.floorplans}
+          areaPhotos={formData.areaPhotos}
           featuredImage={formData.featuredImage}
           gridImages={formData.gridImages}
           onImageUpload={handleImageUpload}
+          onAreaPhotosUpload={handleAreaPhotosUpload}
           onFloorplanUpload={handleFloorplanUpload}
           onRemoveImage={handleRemoveImage}
+          onRemoveAreaPhoto={handleRemoveAreaPhoto}
           onRemoveFloorplan={handleRemoveFloorplan}
           onSetFeaturedImage={handleSetFeaturedImage}
           onToggleGridImage={handleToggleGridImage}

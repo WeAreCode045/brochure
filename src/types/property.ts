@@ -38,6 +38,7 @@ export interface PropertyData {
   gridImages: string[];
   areas: PropertyArea[];
   areaPhotos?: string[];
+  currentPath?: string;
 }
 
 export interface PropertyFormData extends PropertyData {}
