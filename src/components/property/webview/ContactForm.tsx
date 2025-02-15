@@ -31,7 +31,6 @@ export function ContactForm({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you could add the logic to send the form data
     toast({
       title: "Message sent",
       description: "We will contact you soon!",
@@ -45,54 +44,79 @@ export function ContactForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <Label htmlFor="name">Name</Label>
-        <Input
-          id="name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="grid gap-6 md:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor="name" className="text-sm font-medium text-gray-700">
+            Name
+          </Label>
+          <Input
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="border-gray-200 focus:ring-2 focus:ring-offset-1 focus:ring-opacity-50"
+            style={{ 
+              focusRing: secondaryColor,
+            }}
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+            Email
+          </Label>
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="border-gray-200 focus:ring-2 focus:ring-offset-1 focus:ring-opacity-50"
+            style={{ 
+              focusRing: secondaryColor,
+            }}
+            required
+          />
+        </div>
       </div>
-      <div>
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          name="email"
-          type="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <Label htmlFor="phone">Phone Number</Label>
+      <div className="space-y-2">
+        <Label htmlFor="phone" className="text-sm font-medium text-gray-700">
+          Phone Number
+        </Label>
         <Input
           id="phone"
           name="phone"
           type="tel"
           value={formData.phone}
           onChange={handleChange}
+          className="border-gray-200 focus:ring-2 focus:ring-offset-1 focus:ring-opacity-50"
+          style={{ 
+            focusRing: secondaryColor,
+          }}
           required
         />
       </div>
-      <div>
-        <Label htmlFor="message">Message</Label>
+      <div className="space-y-2">
+        <Label htmlFor="message" className="text-sm font-medium text-gray-700">
+          Message
+        </Label>
         <Textarea
           id="message"
           name="message"
           value={formData.message}
           onChange={handleChange}
           placeholder="I'm interested in this property..."
-          className="min-h-[100px]"
+          className="min-h-[120px] border-gray-200 focus:ring-2 focus:ring-offset-1 focus:ring-opacity-50"
+          style={{ 
+            focusRing: secondaryColor,
+          }}
           required
         />
       </div>
       <Button 
         type="submit"
-        className="w-full"
+        className="w-full h-12 text-base font-medium shadow-lg hover:opacity-90 transition-opacity"
         style={{ backgroundColor: secondaryColor }}
       >
         Send Message
